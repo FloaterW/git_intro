@@ -1,2 +1,1 @@
 Farad Wahab
-23
