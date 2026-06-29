@@ -156,17 +156,22 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
         ) : (
           <div className="container" style={{ marginBottom: "var(--space-3xl)" }}>
-            <div
-              style={{
-                borderRadius: "var(--radius-lg)",
-                border: "1px dashed var(--color-border-strong)",
-                backgroundColor: "var(--color-bg-alt)",
-                padding: "var(--space-3xl) var(--space-xl)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <div className="screenshot-placeholder">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="var(--color-text-tertiary)"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                <circle cx="9" cy="9" r="2" />
+                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+              </svg>
               <p
                 style={{
                   fontSize: "0.875rem",
@@ -180,199 +185,218 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
         )}
 
-        {/* Content */}
+        {/* Content with sidebar */}
         <div className="container">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              gap: "var(--space-3xl)",
-              maxWidth: "var(--content-width)",
-            }}
-          >
-            {/* Overview */}
-            <div>
-              <h2 style={sectionHeading}>Overview</h2>
-              <p style={bodyText}>{project.summary}</p>
-            </div>
-
-            {/* Problem */}
-            <div>
-              <h2 style={sectionHeading}>The problem</h2>
-              <p style={bodyText}>{project.problem}</p>
-            </div>
-
-            {/* Role */}
-            <div>
-              <h2 style={sectionHeading}>My role</h2>
-              <p style={bodyText}>{project.role}</p>
-            </div>
-
-            {/* Stack */}
-            <div>
-              <h2 style={sectionHeading}>Tech stack</h2>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "var(--space-xs)",
-                }}
-              >
-                {project.stack.map((tech) => (
-                  <span
-                    key={tech}
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.8125rem",
-                      color: "var(--color-text-secondary)",
-                      backgroundColor: "var(--color-bg-alt)",
-                      padding: "0.25rem 0.625rem",
-                      borderRadius: "var(--radius-sm)",
-                      border: "1px solid var(--color-border)",
-                    }}
-                  >
-                    {tech}
-                  </span>
-                ))}
+          <div className="case-study-layout">
+            {/* Main content */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "var(--space-3xl)",
+              }}
+            >
+              {/* Overview */}
+              <div>
+                <h2 style={sectionHeading}>Overview</h2>
+                <p style={bodyText}>{project.summary}</p>
               </div>
-            </div>
 
-            {/* Highlights */}
-            <div>
-              <h2 style={sectionHeading}>Key features</h2>
-              <ul
-                style={{
-                  listStyle: "none",
-                  padding: 0,
-                  margin: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "var(--space-sm)",
-                }}
-              >
-                {project.highlights.map((h, i) => (
-                  <li
-                    key={i}
-                    style={{
-                      fontSize: "0.9375rem",
-                      color: "var(--color-text-secondary)",
-                      lineHeight: 1.6,
-                      paddingLeft: "var(--space-lg)",
-                      position: "relative",
-                    }}
-                  >
-                    <span
+              {/* Problem */}
+              <div>
+                <h2 style={sectionHeading}>The problem</h2>
+                <p style={bodyText}>{project.problem}</p>
+              </div>
+
+              {/* Highlights */}
+              <div>
+                <h2 style={sectionHeading}>Key features</h2>
+                <ul
+                  style={{
+                    listStyle: "none",
+                    padding: 0,
+                    margin: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "var(--space-sm)",
+                  }}
+                >
+                  {project.highlights.map((h, i) => (
+                    <li
+                      key={i}
                       style={{
-                        position: "absolute",
-                        left: 0,
-                        color: "var(--color-accent)",
-                        fontWeight: 600,
+                        fontSize: "0.9375rem",
+                        color: "var(--color-text-secondary)",
+                        lineHeight: 1.6,
+                        paddingLeft: "var(--space-lg)",
+                        position: "relative",
                       }}
                     >
-                      —
-                    </span>
-                    {h}
-                  </li>
-                ))}
-              </ul>
-            </div>
+                      <span
+                        style={{
+                          position: "absolute",
+                          left: 0,
+                          color: "var(--color-accent)",
+                          fontWeight: 600,
+                        }}
+                      >
+                        —
+                      </span>
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            {/* Technical details */}
-            <div>
-              <h2 style={sectionHeading}>Technical details</h2>
-              <p style={bodyText}>{project.technicalDetails}</p>
-            </div>
-
-            {/* Lessons */}
-            <div>
-              <h2 style={sectionHeading}>What I learned</h2>
-              <p style={bodyText}>{project.lessons}</p>
-            </div>
-
-            {/* Improvements */}
-            <div>
-              <h2 style={sectionHeading}>What I&apos;d improve</h2>
-              <p style={bodyText}>{project.improvements}</p>
-            </div>
-
-            {/* Links */}
-            {(project.links.github || project.links.live) && (
+              {/* Technical details */}
               <div>
-                <h2 style={sectionHeading}>Links</h2>
+                <h2 style={sectionHeading}>Technical details</h2>
+                <p style={bodyText}>{project.technicalDetails}</p>
+              </div>
+
+              {/* Lessons */}
+              <div>
+                <h2 style={sectionHeading}>What I learned</h2>
+                <p style={bodyText}>{project.lessons}</p>
+              </div>
+
+              {/* Improvements */}
+              <div>
+                <h2 style={sectionHeading}>What I&apos;d improve</h2>
+                <p style={bodyText}>{project.improvements}</p>
+              </div>
+
+              {/* Links */}
+              {(project.links.github || project.links.live) && (
+                <div>
+                  <h2 style={sectionHeading}>Links</h2>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "var(--space-lg)",
+                    }}
+                  >
+                    {project.links.github && (
+                      <a
+                        href={project.links.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          fontSize: "0.9375rem",
+                          fontWeight: 500,
+                          color: "var(--color-accent)",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "var(--space-sm)",
+                        }}
+                      >
+                        View source
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                      </a>
+                    )}
+                    {project.links.live && (
+                      <a
+                        href={project.links.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          fontSize: "0.9375rem",
+                          fontWeight: 500,
+                          color: "var(--color-accent)",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "var(--space-sm)",
+                        }}
+                      >
+                        Live demo
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Sidebar — metadata */}
+            <aside
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "var(--space-xl)",
+              }}
+            >
+              <div>
+                <h2 style={sidebarLabel}>My role</h2>
+                <p style={sidebarText}>{project.role}</p>
+              </div>
+
+              <div>
+                <h2 style={sidebarLabel}>Tech stack</h2>
                 <div
                   style={{
                     display: "flex",
                     flexWrap: "wrap",
-                    gap: "var(--space-lg)",
+                    gap: "var(--space-xs)",
                   }}
                 >
-                  {project.links.github && (
-                    <a
-                      href={project.links.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  {project.stack.map((tech) => (
+                    <span
+                      key={tech}
                       style={{
-                        fontSize: "0.9375rem",
-                        fontWeight: 500,
-                        color: "var(--color-accent)",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "var(--space-sm)",
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.75rem",
+                        color: "var(--color-text-secondary)",
+                        backgroundColor: "var(--color-bg-alt)",
+                        padding: "0.1875rem 0.5rem",
+                        borderRadius: "var(--radius-sm)",
+                        border: "1px solid var(--color-border)",
                       }}
                     >
-                      View source
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                        <polyline points="15 3 21 3 21 9" />
-                        <line x1="10" y1="14" x2="21" y2="3" />
-                      </svg>
-                    </a>
-                  )}
-                  {project.links.live && (
-                    <a
-                      href={project.links.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        fontSize: "0.9375rem",
-                        fontWeight: 500,
-                        color: "var(--color-accent)",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "var(--space-sm)",
-                      }}
-                    >
-                      Live demo
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                        <polyline points="15 3 21 3 21 9" />
-                        <line x1="10" y1="14" x2="21" y2="3" />
-                      </svg>
-                    </a>
-                  )}
+                      {tech}
+                    </span>
+                  ))}
                 </div>
               </div>
-            )}
+
+              <div>
+                <h2 style={sidebarLabel}>Year</h2>
+                <p style={sidebarText}>{project.year}</p>
+              </div>
+
+              <div>
+                <h2 style={sidebarLabel}>Status</h2>
+                <p style={sidebarText}>{statusLabel[project.status]}</p>
+              </div>
+            </aside>
           </div>
         </div>
 
@@ -468,4 +492,20 @@ const bodyText: React.CSSProperties = {
   color: "var(--color-text-secondary)",
   lineHeight: 1.7,
   maxWidth: "40rem",
+};
+
+const sidebarLabel: React.CSSProperties = {
+  fontSize: "0.75rem",
+  fontFamily: "var(--font-mono)",
+  fontWeight: 500,
+  color: "var(--color-text-tertiary)",
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
+  marginBottom: "var(--space-sm)",
+};
+
+const sidebarText: React.CSSProperties = {
+  fontSize: "0.8125rem",
+  color: "var(--color-text-secondary)",
+  lineHeight: 1.6,
 };

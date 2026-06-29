@@ -20,7 +20,7 @@ export default function HomePage() {
         }}
       >
         <div className="container">
-          <div style={{ maxWidth: "40rem" }}>
+          <div style={{ maxWidth: "44rem" }}>
             <p
               style={{
                 fontFamily: "var(--font-mono)",
@@ -33,8 +33,9 @@ export default function HomePage() {
               {siteConfig.university} · Computer Science &apos;{siteConfig.gradYear.slice(-2)}
             </p>
             <h1
+              className="accent-bar"
               style={{
-                fontSize: "clamp(2rem, 5vw, 3rem)",
+                fontSize: "clamp(2rem, 5vw, 3.25rem)",
                 fontWeight: 700,
                 lineHeight: 1.1,
                 letterSpacing: "-0.025em",
@@ -125,54 +126,54 @@ export default function HomePage() {
           </div>
 
           {featured.map((project, i) => (
-            <ProjectCard key={project.slug} project={project} index={i} />
+            <ProjectCard
+              key={project.slug}
+              project={project}
+              index={i}
+              variant={i === 0 ? "hero" : "default"}
+            />
           ))}
         </div>
       </section>
 
-      <hr className="divider container" />
-
-      {/* Technical Strengths */}
-      <section className="section">
+      {/* Technical Strengths — two-column layout */}
+      <section className="section section-band">
         <div className="container">
-          <p className="section-label">Technical strengths</p>
-          <h2
-            className="section-title"
-            style={{ marginBottom: "var(--space-2xl)" }}
-          >
-            What I work with
-          </h2>
+          <div className="two-col-section">
+            <div>
+              <p className="section-label">Technical strengths</p>
+              <h2
+                className="section-title"
+                style={{ marginBottom: "var(--space-md)" }}
+              >
+                What I work with
+              </h2>
+            </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(16rem, 1fr))",
-              gap: "var(--space-xl)",
-            }}
-          >
-            {skillGroups.map((group) => (
-              <SkillGroup key={group.label} group={group} />
-            ))}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(14rem, 1fr))",
+                gap: "var(--space-xl)",
+              }}
+            >
+              {skillGroups.map((group) => (
+                <SkillGroup key={group.label} group={group} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <hr className="divider container" />
-
-      {/* About preview */}
+      {/* About preview — wider layout */}
       <section className="section">
         <div className="container">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              gap: "var(--space-2xl)",
-              alignItems: "start",
-            }}
-          >
-            <div style={{ maxWidth: "var(--content-width)" }}>
+          <div className="two-col-section" style={{ alignItems: "start" }}>
+            <div>
               <p className="section-label">About</p>
               <h2 className="section-title">A bit about me</h2>
+            </div>
+            <div>
               <div className="prose">
                 <p
                   style={{

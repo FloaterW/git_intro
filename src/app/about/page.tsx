@@ -21,6 +21,7 @@ export default function AboutPage() {
           <div style={{ maxWidth: "var(--content-width)" }}>
             <p className="section-label">About</p>
             <h1
+              className="accent-bar"
               style={{
                 fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
                 fontWeight: 700,
@@ -85,129 +86,127 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <hr className="divider container" />
-
-      {/* What I value */}
-      <section className="section">
+      {/* What I value — card grid */}
+      <section className="section section-band">
         <div className="container">
-          <div style={{ maxWidth: "var(--content-width)" }}>
-            <h2
-              style={{
-                fontSize: "1.375rem",
-                fontWeight: 600,
-                marginBottom: "var(--space-xl)",
-              }}
-            >
-              How I think about software
-            </h2>
+          <h2
+            style={{
+              fontSize: "1.375rem",
+              fontWeight: 600,
+              marginBottom: "var(--space-2xl)",
+            }}
+          >
+            How I think about software
+          </h2>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--space-xl)",
-              }}
-            >
-              <div>
-                <h3
-                  style={{
-                    fontSize: "0.9375rem",
-                    fontWeight: 600,
-                    marginBottom: "var(--space-xs)",
-                  }}
-                >
-                  Start from the problem
-                </h3>
-                <p
-                  style={{
-                    fontSize: "0.9375rem",
-                    color: "var(--color-text-secondary)",
-                    lineHeight: 1.7,
-                  }}
-                >
-                  The best technical decisions come from understanding the
-                  problem deeply — not from picking the trendiest stack. I try to
-                  understand what the system needs before deciding how to build
-                  it.
-                </p>
-              </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(16rem, 1fr))",
+              gap: "var(--space-lg)",
+            }}
+          >
+            <div className="value-card">
+              <h3
+                style={{
+                  fontSize: "0.9375rem",
+                  fontWeight: 600,
+                  marginBottom: "var(--space-sm)",
+                }}
+              >
+                Start from the problem
+              </h3>
+              <p
+                style={{
+                  fontSize: "0.875rem",
+                  color: "var(--color-text-secondary)",
+                  lineHeight: 1.7,
+                }}
+              >
+                The best technical decisions come from understanding the
+                problem deeply — not from picking the trendiest stack. I try to
+                understand what the system needs before deciding how to build
+                it.
+              </p>
+            </div>
 
-              <div>
-                <h3
-                  style={{
-                    fontSize: "0.9375rem",
-                    fontWeight: 600,
-                    marginBottom: "var(--space-xs)",
-                  }}
-                >
-                  Earn complexity
-                </h3>
-                <p
-                  style={{
-                    fontSize: "0.9375rem",
-                    color: "var(--color-text-secondary)",
-                    lineHeight: 1.7,
-                  }}
-                >
-                  Simple code that works is better than clever code that
-                  impresses. I add abstractions when they reduce confusion, not
-                  when they demonstrate knowledge.
-                </p>
-              </div>
+            <div className="value-card">
+              <h3
+                style={{
+                  fontSize: "0.9375rem",
+                  fontWeight: 600,
+                  marginBottom: "var(--space-sm)",
+                }}
+              >
+                Earn complexity
+              </h3>
+              <p
+                style={{
+                  fontSize: "0.875rem",
+                  color: "var(--color-text-secondary)",
+                  lineHeight: 1.7,
+                }}
+              >
+                Simple code that works is better than clever code that
+                impresses. I add abstractions when they reduce confusion, not
+                when they demonstrate knowledge.
+              </p>
+            </div>
 
-              <div>
-                <h3
-                  style={{
-                    fontSize: "0.9375rem",
-                    fontWeight: 600,
-                    marginBottom: "var(--space-xs)",
-                  }}
-                >
-                  Ship, then iterate
-                </h3>
-                <p
-                  style={{
-                    fontSize: "0.9375rem",
-                    color: "var(--color-text-secondary)",
-                    lineHeight: 1.7,
-                  }}
-                >
-                  A working system you can improve is more valuable than a
-                  perfect plan you haven&apos;t started. I aim for solid first
-                  versions and clear paths to improvement.
-                </p>
-              </div>
+            <div className="value-card">
+              <h3
+                style={{
+                  fontSize: "0.9375rem",
+                  fontWeight: 600,
+                  marginBottom: "var(--space-sm)",
+                }}
+              >
+                Ship, then iterate
+              </h3>
+              <p
+                style={{
+                  fontSize: "0.875rem",
+                  color: "var(--color-text-secondary)",
+                  lineHeight: 1.7,
+                }}
+              >
+                A working system you can improve is more valuable than a
+                perfect plan you haven&apos;t started. I aim for solid first
+                versions and clear paths to improvement.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <hr className="divider container" />
-
-      {/* Education */}
+      {/* Education — two-column layout */}
       <section className="section">
         <div className="container">
-          <div style={{ maxWidth: "var(--content-width)" }}>
-            <p className="section-label">Education</p>
-            <h2
-              style={{
-                fontSize: "1.375rem",
-                fontWeight: 600,
-                marginBottom: "var(--space-lg)",
-              }}
-            >
-              {siteConfig.university}
-            </h2>
-            <p
-              style={{
-                fontSize: "0.9375rem",
-                color: "var(--color-text-secondary)",
-                lineHeight: 1.7,
-              }}
-            >
-              Bachelor of Science in Computer Science · Expected{" "}
-              {siteConfig.gradYear}
-            </p>
+          <div className="two-col-section" style={{ alignItems: "start" }}>
+            <div>
+              <p className="section-label">Education</p>
+            </div>
+            <div>
+              <h2
+                style={{
+                  fontSize: "1.375rem",
+                  fontWeight: 600,
+                  marginBottom: "var(--space-sm)",
+                }}
+              >
+                {siteConfig.university}
+              </h2>
+              <p
+                style={{
+                  fontSize: "0.9375rem",
+                  color: "var(--color-text-secondary)",
+                  lineHeight: 1.7,
+                }}
+              >
+                Bachelor of Science in Computer Science · Expected{" "}
+                {siteConfig.gradYear}
+              </p>
+            </div>
           </div>
         </div>
       </section>
