@@ -223,9 +223,10 @@ test.describe("Case study pages", () => {
     });
   }
 
-  test("screenshot placeholder shows when no image", async ({ page }) => {
+  test("project illustration shows when no image", async ({ page }) => {
     await page.goto("/projects/chess-engine");
-    await expect(page.getByText("Screenshot coming soon")).toBeVisible();
+    const illustration = page.locator("svg[aria-hidden='true']").first();
+    await expect(illustration).toBeVisible();
   });
 });
 

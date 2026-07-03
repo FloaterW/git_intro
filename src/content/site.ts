@@ -3,11 +3,10 @@ export const siteConfig = {
   title: "Farad Wahab — Software Engineer",
   description:
     "Final-year computer science student at Oregon State University building full-stack applications, data tools, and practical interfaces.",
-  url: "https://faradwahab.com", // TODO: Update with actual domain
+  url: "https://faradwahab.com", // TODO: Update with actual domain once deployed
   email: "wahabf@oregonstate.edu",
-  github: "https://github.com/floaterw", // TODO: Confirm GitHub URL
+  github: "https://github.com/floaterw",
   linkedin: "https://linkedin.com/in/faradwahab", // TODO: Confirm LinkedIn URL
-  // TODO: Add resume.pdf to /public
   resumeUrl: "/resume.pdf",
   location: "Oregon",
   university: "Oregon State University",

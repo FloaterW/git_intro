@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects, getProjectBySlug, getAllSlugs } from "@/content/projects";
+import ProjectIllustration from "@/components/ProjectIllustration";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -136,7 +137,7 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* Image placeholder */}
+        {/* Project visual */}
         {project.image ? (
           <div className="container" style={{ marginBottom: "var(--space-3xl)" }}>
             <div
@@ -156,32 +157,7 @@ export default async function ProjectPage({ params }: PageProps) {
           </div>
         ) : (
           <div className="container" style={{ marginBottom: "var(--space-3xl)" }}>
-            <div className="screenshot-placeholder">
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="var(--color-text-tertiary)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                <circle cx="9" cy="9" r="2" />
-                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-              </svg>
-              <p
-                style={{
-                  fontSize: "0.875rem",
-                  color: "var(--color-text-tertiary)",
-                  fontFamily: "var(--font-mono)",
-                }}
-              >
-                Screenshot coming soon
-              </p>
-            </div>
+            <ProjectIllustration slug={project.slug} category={project.category} />
           </div>
         )}
 

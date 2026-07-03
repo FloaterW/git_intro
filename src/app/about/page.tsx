@@ -18,21 +18,30 @@ export default function AboutPage() {
         }}
       >
         <div className="container">
-          <div style={{ maxWidth: "var(--content-width)" }}>
-            <p className="section-label">About</p>
-            <h1
-              className="accent-bar"
-              style={{
-                fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-                fontWeight: 700,
-                letterSpacing: "-0.025em",
-                marginBottom: "var(--space-2xl)",
-              }}
-            >
-              Building software that earns its complexity.
-            </h1>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr",
+              gap: "var(--space-2xl)",
+              alignItems: "start",
+            }}
+            className="about-hero-grid"
+          >
+            <div style={{ maxWidth: "var(--content-width)" }}>
+              <p className="section-label">About</p>
+              <h1
+                className="accent-bar"
+                style={{
+                  fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.025em",
+                  marginBottom: "var(--space-2xl)",
+                }}
+              >
+                Building software that earns its complexity.
+              </h1>
 
-            <div className="prose">
+              <div className="prose">
               <p
                 style={{
                   fontSize: "1.0625rem",
@@ -82,8 +91,56 @@ export default function AboutPage() {
                 building things that actually work for the people using them.
               </p>
             </div>
+            </div>
+
+            {/* Avatar / Photo */}
+            <div
+              className="about-photo"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: "12rem",
+                  height: "12rem",
+                  borderRadius: "50%",
+                  backgroundColor: "var(--color-bg-alt)",
+                  border: "2px solid var(--color-border)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "3rem",
+                    fontWeight: 700,
+                    color: "var(--color-accent)",
+                    opacity: 0.5,
+                    letterSpacing: "-0.02em",
+                    fontFamily: "var(--font-sans)",
+                  }}
+                >
+                  FW
+                </span>
+              </div>
+            </div>
           </div>
         </div>
+
+        <style>{`
+          @media (min-width: 768px) {
+            .about-hero-grid {
+              grid-template-columns: 1fr 14rem !important;
+            }
+            .about-photo {
+              padding-top: var(--space-4xl);
+            }
+          }
+        `}</style>
       </section>
 
       {/* What I value — card grid */}
