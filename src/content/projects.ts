@@ -16,6 +16,7 @@ export interface Project {
   stack: string[];
   links: { github?: string; live?: string; liveNote?: string };
   image: string;
+  heroImage?: { src: string; caption: string };
   video?: { webm: string; mp4: string; poster: string };
   metrics: { value: string; label: string }[];
   featured: boolean;
@@ -64,6 +65,10 @@ export const projects: Project[] = [
         "The data server sleeps when nobody is using it, so the first load can take about 30 seconds.",
     },
     image: "/images/projects/civicscope.png",
+    heroImage: {
+      src: "/images/projects/civicscope-tracts.png",
+      caption: "CivicScope: rent burden across 1,334 GTA census tracts",
+    },
     metrics: [
       { value: "1,334", label: "census tracts on the map" },
       { value: "1,244", label: "tracts with real CMHC construction data" },

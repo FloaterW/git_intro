@@ -26,7 +26,7 @@ export default async function OpengraphImage({ params }: { params: Promise<{ slu
         justifyContent: "center",
         padding: "0 90px",
         background: "#fbfaf7",
-        borderBottom: "14px solid #b8440f",
+        borderBottom: "14px solid #2f5a9e",
         color: "#1f1d1a",
       }}
     >

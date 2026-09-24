@@ -38,7 +38,7 @@ export const siteConfig: SiteConfig = {
   lookingFor: "a software engineering internship for summer 2027", // PLACEHOLDER
   location: "Corvallis, OR", // PLACEHOLDER
   availability: "Open to relocating or remote", // PLACEHOLDER
-  currently: "Adding a transposition table to my chess engine", // PLACEHOLDER: or null to hide
+  currently: null, // Set to a short real line, e.g. what you are building this month, to show it
   navLinks: [
     { label: "Projects", href: "/projects" },
     { label: "About", href: "/about" },

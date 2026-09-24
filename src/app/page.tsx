@@ -49,7 +49,7 @@ export default function HomePage() {
             </p>
           )}
         </div>
-        <HeroShowcase projects={featuredProjects} />
+        <HeroShowcase project={lead} />
       </section>
 
       <section className="mt-20">
@@ -71,8 +71,7 @@ export default function HomePage() {
 
       <section className="mt-20 grid items-start gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
         <div className="lg:sticky lg:top-24">
-          <p className="text-sm font-medium text-accent">Interactive</p>
-          <h2 className="mt-1 heading-2">The bug that taught me the most</h2>
+          <h2 className="heading-2">The bug that taught me the most</h2>
           <p className="mt-3 prose-body">
             My team&apos;s banking app passed every test and still lost money. Two transfers from
             the same account could read the same balance before either one saved. Step through it to

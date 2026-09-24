@@ -7,7 +7,7 @@
   --muted: #57524b;
   --faint: #736d64;
   --line: #e4dfd6;
-  --accent: #b8440f;
+  --accent: #2f5a9e;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,7 +18,7 @@
     --muted: #b3aca2;
     --faint: #8a847b;
     --line: #2e2b27;
-    --accent: #f08a4b;
+    --accent: #8fb4ec;
   }
 }
 
@@ -83,7 +83,7 @@
     --muted: #57524b;
     --faint: #736d64;
     --line: #e4dfd6;
-    --accent: #b8440f;
+    --accent: #2f5a9e;
     color-scheme: light;
   }
 }
