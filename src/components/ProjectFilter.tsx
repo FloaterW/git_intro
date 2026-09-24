@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import type { Project, Tag } from "@/content/projects";
+import { MIN_FOR_FILTERS, type Project, type Tag } from "@/content/projects";
 import ProjectCard from "@/components/ProjectCard";
 
 interface Props {
@@ -36,6 +36,19 @@ export function FilterView({
     { label: "All", value: null },
     ...tags.map((t) => ({ label: t, value: t })),
   ];
+
+  // With only a handful of projects, filters leave near-empty pages. Show them once there are more.
+  if (projects.length < MIN_FOR_FILTERS) {
+    return (
+      <ul className="grid gap-6 sm:grid-cols-2">
+        {projects.map((p, i) => (
+          <li key={p.slug}>
+            <ProjectCard project={p} headingLevel="h2" eager={i < 2} />
+          </li>
+        ))}
+      </ul>
+    );
+  }
 
   return (
     <>

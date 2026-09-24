@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { allTags, featuredProjects, projects } from "../src/content/projects";
+import { MIN_FOR_FILTERS, allTags, featuredProjects, projects } from "../src/content/projects";
 
 const projectPaths = projects.map((p) => `/projects/${p.slug}`);
 const pages = ["/", "/projects", "/about", "/resume", ...projectPaths];
@@ -97,6 +97,11 @@ test("home page shows featured projects that link to their write-ups", async ({ 
 
 test("project filters narrow the list", async ({ page }) => {
   await page.goto("/projects");
+  if (projects.length < MIN_FOR_FILTERS) {
+    await expect(page.getByRole("group", { name: "Filter projects" })).toHaveCount(0);
+    await expect(page.locator("main li")).toHaveCount(projects.length);
+    return;
+  }
   const cards = page.locator("main li");
   await expect(cards).toHaveCount(projects.length);
   for (const tag of allTags) {
@@ -231,6 +236,7 @@ test("short pages don't scroll at all", async ({ page }) => {
 });
 
 test("project filter survives going back", async ({ page }) => {
+  test.skip(projects.length < MIN_FOR_FILTERS, "filters are hidden with this few projects");
   const tag = allTags.find((t) => projects.filter((p) => p.tags.includes(t)).length > 0)!;
   const match = projects.find((p) => p.tags.includes(tag))!;
   await page.goto("/projects");
@@ -282,3 +288,23 @@ test("tabbing never hides the focused element under the sticky header", async ({
     expect(covered).toBe(false);
   }
 });
+
+for (const path of ["/", `/projects/${withDemo.slug}`]) {
+  test(`step-through demo works on ${path}`, async ({ page }) => {
+    await page.goto(path);
+    const demo = page.getByRole("region", { name: /Step-through demo/ });
+    const next = demo.getByRole("button", { name: /^(Start|Next step)$/ });
+
+    for (let i = 0; i < 4; i++) await next.click();
+    await expect(demo.getByText(/should be \$20/)).toBeVisible();
+    await expect(demo.getByText("Step 4 of 4")).toBeVisible();
+
+    await demo.getByRole("button", { name: "Back" }).click();
+    await expect(demo.getByText("Step 3 of 4")).toBeVisible();
+
+    await demo.getByRole("button", { name: "With a row lock" }).click();
+    await expect(demo.getByText("Step 0 of 5")).toBeVisible();
+    for (let i = 0; i < 5; i++) await next.click();
+    await expect(demo.getByText(/ends at \$20, exactly/)).toBeVisible();
+  });
+}

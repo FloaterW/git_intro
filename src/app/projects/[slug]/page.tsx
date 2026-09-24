@@ -7,6 +7,7 @@ import { pageMetadata } from "@/lib/metadata";
 import ArchitectureDiagram from "@/components/ArchitectureDiagram";
 import ButtonLink from "@/components/ButtonLink";
 import DemoVideo from "@/components/DemoVideo";
+import InterleavingStepper from "@/components/InterleavingStepper";
 import RaceConditionDemo from "@/components/RaceConditionDemo";
 
 interface PageProps {
@@ -174,11 +175,17 @@ export default async function ProjectPage({ params }: PageProps) {
       </div>
 
       {project.demo === "race-condition" && (
-        <section className="mt-12 max-w-3xl">
+        <section id="try-it" className="mt-12 max-w-3xl">
           <h2 className="heading-2">Try the bug yourself</h2>
           <p className="mt-3 mb-5 max-w-2xl prose-body">
-            A small simulation of the race condition above. Run it without locks and money goes
-            missing. Switch on row locks and the total never changes.
+            Step through two transfers hitting the same account, first without a lock and then with
+            one.
+          </p>
+          <InterleavingStepper />
+          <h3 className="mt-10 font-medium">Now at scale</h3>
+          <p className="mt-2 mb-5 max-w-2xl prose-body">
+            The same thing with 1,000 transfers. Without locks, money goes missing or appears from
+            nowhere. With row locks, the total never changes.
           </p>
           <RaceConditionDemo />
         </section>

@@ -5,6 +5,7 @@ import { experience } from "@/content/resume";
 import { pageMetadata } from "@/lib/metadata";
 import ButtonLink from "@/components/ButtonLink";
 import HeroShowcase from "@/components/HeroShowcase";
+import InterleavingStepper from "@/components/InterleavingStepper";
 import ProjectCard from "@/components/ProjectCard";
 import SocialLinks from "@/components/SocialLinks";
 
@@ -12,6 +13,7 @@ export const metadata = pageMetadata({ description: siteConfig.description, path
 
 export default function HomePage() {
   const [lead, ...rest] = featuredProjects;
+  const demoProject = projects.find((p) => p.demo === "race-condition")!;
 
   return (
     <>
@@ -25,8 +27,9 @@ export default function HomePage() {
             Computer science at Oregon State · {siteConfig.availability}
           </p>
           <p className="mt-5 prose-body motion-safe:animate-rise motion-safe:[animation-delay:180ms]">
-            I&apos;m looking for {siteConfig.lookingFor}. My projects range from a banking app that
-            has to stay correct under load to a map of housing costs for every county in the US.
+            Transfers that can&apos;t lose money under load, county data that changes shape between
+            years, a chess search that has to finish in two seconds: those are the problems I like.
+            I&apos;m looking for {siteConfig.lookingFor}.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 motion-safe:animate-rise motion-safe:[animation-delay:240ms]">
             {siteConfig.resumePdf && (
@@ -39,10 +42,7 @@ export default function HomePage() {
           </div>
           {siteConfig.currently && (
             <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-line bg-card px-3 py-1 text-sm text-muted motion-safe:animate-rise motion-safe:[animation-delay:300ms]">
-              <span className="relative flex size-2" aria-hidden="true">
-                <span className="absolute inline-flex size-full rounded-full bg-accent opacity-60 motion-safe:animate-ping" />
-                <span className="relative inline-flex size-2 rounded-full bg-accent" />
-              </span>
+              <span className="size-2 rounded-full bg-emerald-600" aria-hidden="true" />
               <span>
                 <span className="font-medium text-ink">Currently:</span> {siteConfig.currently}
               </span>
@@ -67,6 +67,25 @@ export default function HomePage() {
             <ProjectCard key={p.slug} project={p} />
           ))}
         </div>
+      </section>
+
+      <section className="mt-20 grid items-start gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
+        <div className="lg:sticky lg:top-24">
+          <p className="text-sm font-medium text-accent">Interactive</p>
+          <h2 className="mt-1 heading-2">The bug that taught me the most</h2>
+          <p className="mt-3 prose-body">
+            My team&apos;s banking app passed every test and still lost money. Two transfers from
+            the same account could read the same balance before either one saved. Step through it to
+            see exactly how money goes missing, then turn on the fix.
+          </p>
+          <Link
+            href={`/projects/${demoProject.slug}#try-it`}
+            className="mt-4 inline-block text-small text-link"
+          >
+            Read the write-up and run it with 1,000 transfers
+          </Link>
+        </div>
+        <InterleavingStepper />
       </section>
 
       {experience.length > 0 && (

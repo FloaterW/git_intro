@@ -9,7 +9,7 @@ export interface Project {
   summary: string;
   highlight?: string;
   tags: Tag[];
-  architecture?: { label: string; detail: string }[];
+  architecture?: { label: string; detail: string; note?: string }[];
   role: string;
   team: string;
   timeline: string;
@@ -36,7 +36,11 @@ export const projects: Project[] = [
     architecture: [
       { label: "React", detail: "accounts and transfer UI" },
       { label: "Spring Boot API", detail: "auth and validation" },
-      { label: "Transfer service", detail: "row locks, one transaction" },
+      {
+        label: "Transfer service",
+        detail: "row locks, one transaction",
+        note: "The fix lives here",
+      },
       { label: "PostgreSQL", detail: "accounts and ledger" },
     ],
     role: "Backend lead: transfer logic, database schema and login", // PLACEHOLDER
@@ -106,7 +110,7 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
     architecture: [
       { label: "Browser", detail: "streams the upload" },
       { label: "S3", detail: "stores the original" },
-      { label: "Node worker", detail: "FFmpeg: 1080p, 720p, 360p" },
+      { label: "Node worker", detail: "FFmpeg: 1080p, 720p, 360p", note: "Slowest step" },
       { label: "PostgreSQL", detail: "tracks processing state" },
       { label: "Player", detail: "picks a resolution" },
     ],
@@ -158,7 +162,7 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
     tags: ["Data", "Web"],
     architecture: [
       { label: "4 public datasets", detail: "prices, incomes, boundaries" },
-      { label: "Pandas pipeline", detail: "clean and join" },
+      { label: "Pandas pipeline", detail: "clean and join", note: "Most of the work" },
       { label: "PostgreSQL + PostGIS", detail: "county shapes and history" },
       { label: "React + Plotly", detail: "map and charts" },
     ],
@@ -210,7 +214,11 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
     tags: ["Systems"],
     architecture: [
       { label: "Move generator", detail: "every legal move" },
-      { label: "Alpha-beta search", detail: "captures and checks first" },
+      {
+        label: "Alpha-beta search",
+        detail: "captures and checks first",
+        note: "Where the speed-up came from",
+      },
       { label: "Evaluation", detail: "material and position" },
       { label: "Terminal UI", detail: "you vs. the engine" },
     ],
@@ -306,6 +314,9 @@ void orderMoves(std::vector<Move>& moves, const Board& board) {
 
 export const featuredProjects = projects.filter((p) => p.featured);
 export const allTags: Tag[] = ["Web", "Data", "Systems"];
+
+// Below this many projects, the Projects page skips the tag filters.
+export const MIN_FOR_FILTERS = 8;
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);

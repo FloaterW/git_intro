@@ -36,6 +36,14 @@ grep -rn PLACEHOLDER src public
 
 That covers the project numbers and stories, the GitHub and demo links, the experience entries, the GPA, the graduation date, the "Currently" line, the About paragraph and the photo. The screenshots, the chess demo clip and `public/resume.pdf` are generated mock-ups too. Replace all of them.
 
+## How it's built
+
+- **Static pages.** Every page, including one per project, is generated at build time from the files in `src/content/`. There is no database or API behind the site.
+- **Images.** Screenshots go through `next/image`, so each visitor gets a WebP sized for their screen instead of the 1600px original.
+- **Interactive demos.** The banking page has two client components: a step-through of two transfers colliding and a simulation of 1,000 concurrent transfers with and without row locks. Everything else is server-rendered.
+- **Motion.** Entrance animations, card hovers and the demo video all respect the operating system's reduced-motion setting.
+- **Checks.** GitHub Actions runs formatting, lint, type checks, a production build and the Playwright suite on every push and pull request. Locally, Lighthouse scores 94 to 100 on every page, and axe reports no accessibility violations in light or dark mode.
+
 ## Formatting
 
 ```bash

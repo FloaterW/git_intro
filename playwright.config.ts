@@ -10,7 +10,8 @@ export default defineConfig({
     launchOptions: executablePath ? { executablePath } : {},
   },
   webServer: {
-    command: "npm run build && npm run start",
+    // CI builds in an earlier step, so only start the server there.
+    command: process.env.CI ? "npm run start" : "npm run build && npm run start",
     url: "http://localhost:3000",
     reuseExistingServer: true,
     timeout: 180_000,

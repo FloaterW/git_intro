@@ -48,7 +48,17 @@ export default function ProjectCard({
           <span className="shrink-0 text-sm text-faint tabular-nums">{p.year}</span>
         </div>
         <p className="mt-2 text-small text-muted">{p.summary}</p>
-        {p.highlight && <p className="mt-3 text-sm font-medium text-accent">{p.highlight}</p>}
+        {p.highlight && (
+          <p className="mt-3 flex gap-2 text-sm font-medium text-ink">
+            <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+            {p.highlight}
+          </p>
+        )}
+        {p.demo && (
+          <p className="mt-3 w-fit rounded-full border border-accent/40 px-2.5 py-0.5 text-xs font-medium text-accent">
+            Interactive demo inside
+          </p>
+        )}
         <p className={`pt-4 text-sm text-faint ${wide ? "" : "mt-auto"}`}>{p.stack.join(" · ")}</p>
         {wide && (
           <p className="mt-4 text-small font-medium text-ink">

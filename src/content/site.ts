@@ -21,7 +21,10 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: "Farad Wahab",
-  tagline: "I build full-stack web apps and data tools.",
+  // Draft headline. Alternatives if this doesn't sound like you:
+  //   "I build full-stack apps and like the problems where being slightly wrong isn't OK."
+  //   "Full-stack developer who likes concurrency bugs, messy data and fast search."
+  tagline: "I build full-stack apps, and I care most about the parts that have to be right.",
   description:
     "Farad Wahab is a computer science student at Oregon State University who builds full-stack web apps and data tools.",
   url: "https://faradwahab.com", // PLACEHOLDER: your real domain once deployed
