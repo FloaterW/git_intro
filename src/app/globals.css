@@ -2,6 +2,7 @@
 
 :root {
   --paper: #fbfaf7;
+  --card: #ffffff;
   --ink: #1f1d1a;
   --muted: #57524b;
   --faint: #736d64;
@@ -12,6 +13,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --paper: #161513;
+    --card: #1e1c19;
     --ink: #ece8e1;
     --muted: #b3aca2;
     --faint: #8a847b;
@@ -22,42 +24,52 @@
 
 @theme inline {
   --color-paper: var(--paper);
+  --color-card: var(--card);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-faint: var(--faint);
   --color-line: var(--line);
   --color-accent: var(--accent);
-  --font-serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --font-serif: var(--font-source-serif), Georgia, serif;
 }
 
-html {
-  color-scheme: light dark;
+@theme {
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.7;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.6;
 }
 
-body {
-  background: var(--paper);
-  color: var(--ink);
+@layer base {
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply bg-paper text-ink;
+  }
+
+  ::selection {
+    @apply bg-accent text-paper;
+  }
+
+  :focus-visible {
+    @apply rounded-sm outline-2 outline-offset-3 outline-accent;
+  }
 }
 
-::selection {
-  background: var(--accent);
-  color: var(--paper);
+@utility heading-1 {
+  @apply font-serif text-3xl font-semibold tracking-tight sm:text-4xl;
 }
 
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+@utility heading-2 {
+  @apply font-serif text-xl font-semibold;
 }
 
-/* Inline links inside running text */
-.text-link {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
+@utility prose-body {
+  @apply text-body text-muted;
 }
 
-.text-link:hover {
-  color: var(--accent);
+@utility text-link {
+  @apply text-ink underline decoration-accent decoration-1 underline-offset-3 transition-colors duration-150 hover:text-accent;
 }

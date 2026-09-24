@@ -1,94 +1,100 @@
 import type { Metadata } from "next";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { projects, getProjectBySlug, getAllSlugs } from "@/content/projects";
+import { projects, getProjectBySlug } from "@/content/projects";
+import { pageMetadata } from "@/lib/metadata";
+import ButtonLink from "@/components/ButtonLink";
+import DemoVideo from "@/components/DemoVideo";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return getAllSlugs().map((slug) => ({ slug }));
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return projects.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = getProjectBySlug((await params).slug);
   if (!project) return {};
-  return { title: project.title, description: project.summary };
-}
-
-function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex items-center gap-1.5 rounded border border-line px-3 py-1.5 text-[15px] hover:border-accent hover:text-accent"
-    >
-      {children}
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-        <path d="M3.5 8.5l5-5M4.5 3.5h4v4" />
-      </svg>
-    </a>
-  );
+  return pageMetadata({
+    title: project.title,
+    description: project.summary,
+    path: `/projects/${project.slug}`,
+    image: `/projects/${project.slug}/opengraph-image`,
+  });
 }
 
 export default async function ProjectPage({ params }: PageProps) {
-  const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = getProjectBySlug((await params).slug);
   if (!project) notFound();
 
   const i = projects.indexOf(project);
   const prev = projects[i - 1];
   const next = projects[i + 1];
 
-  const facts = [
+  const facts: [label: string, value: string][] = [
     ["My role", project.role],
     ["Team", project.team],
     ["When", project.timeline],
     ["Built with", project.stack.join(", ")],
   ];
 
+  const imageSizes = "(min-width: 896px) 832px, 100vw";
+
   return (
     <article>
-      <Link href="/projects" className="text-[15px] text-muted hover:text-ink">
-        &larr; Projects
+      <Link href="/projects" className="text-small text-muted transition-colors duration-150 hover:text-ink">
+        &larr; All projects
       </Link>
 
-      <h1 className="mt-6 font-serif text-3xl font-semibold">{project.title}</h1>
-      <p className="mt-3 text-[17px] leading-relaxed text-muted">{project.summary}</p>
+      <header className="mt-6 max-w-2xl">
+        <h1 className="heading-1">{project.title}</h1>
+        <p className="mt-3 prose-body">{project.summary}</p>
+        {(project.links.live || project.links.github) && (
+          <div className="mt-5 flex flex-wrap gap-3">
+            {project.links.live && (
+              <ButtonLink href={project.links.live} variant="primary" external>
+                Live demo
+              </ButtonLink>
+            )}
+            {project.links.github && (
+              <ButtonLink href={project.links.github} external>
+                Source code
+              </ButtonLink>
+            )}
+          </div>
+        )}
+      </header>
 
-      {(project.links.live || project.links.github) && (
-        <div className="mt-5 flex flex-wrap gap-3">
-          {project.links.live && <ExternalLink href={project.links.live}>Try it</ExternalLink>}
-          {project.links.github && <ExternalLink href={project.links.github}>Code</ExternalLink>}
-        </div>
-      )}
-
-      {project.video ? (
-        <video
-          src={project.video}
-          poster={project.image}
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-label={`Short demo of ${project.title}`}
-          className="mt-8 w-full rounded-md border border-line"
-        />
-      ) : (
-        project.image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+      <div className="mt-8">
+        {project.video ? (
+          <DemoVideo
+            webm={project.video.webm}
+            mp4={project.video.mp4}
+            poster={
+              getImageProps({ src: project.image, alt: "", width: 1600, height: 1000, sizes: imageSizes }).props.src
+            }
+            label={`Short demo of ${project.title}`}
+          />
+        ) : (
+          <Image
             src={project.image}
             alt={`Screenshot of ${project.title}`}
-            className="mt-8 w-full rounded-md border border-line"
+            width={1600}
+            height={1000}
+            sizes={imageSizes}
+            loading="eager"
+            fetchPriority="high"
+            className="w-full rounded-lg border border-line dark:brightness-90"
           />
-        )
-      )}
+        )}
+      </div>
 
-      <dl className="mt-8 grid gap-x-8 gap-y-4 text-[15px] sm:grid-cols-2">
+      <dl className="mt-8 grid grid-cols-2 gap-x-8 gap-y-4 text-small sm:grid-cols-4">
         {facts.map(([label, value]) => (
           <div key={label}>
             <dt className="text-sm text-faint">{label}</dt>
@@ -108,33 +114,46 @@ export default async function ProjectPage({ params }: PageProps) {
         </ul>
       )}
 
-      <div className="mt-10 space-y-10">
+      <div className="mt-10 max-w-2xl space-y-10">
         {project.sections.map((section) => (
           <section key={section.heading}>
-            <h2 className="font-serif text-xl font-semibold">{section.heading}</h2>
-            <div className="mt-3 space-y-4 text-[17px] leading-relaxed text-muted">
-              {section.body.map((para, j) => (
-                <p key={j}>{para}</p>
+            <h2 className="heading-2">{section.heading}</h2>
+            <div className="mt-3 space-y-4 prose-body">
+              {section.body.map((para) => (
+                <p key={para}>{para}</p>
               ))}
             </div>
           </section>
         ))}
+
+        {project.code && (
+          <section>
+            <h2 className="heading-2">A piece of the code</h2>
+            <p className="mt-3 prose-body">{project.code.caption}</p>
+            <pre
+              tabIndex={0}
+              aria-label={`Code sample from ${project.title}`}
+              className="mt-4 overflow-x-auto rounded-lg border border-line bg-card p-4 text-[13px] leading-relaxed">
+              <code className={`language-${project.code.language}`}>{project.code.source}</code>
+            </pre>
+          </section>
+        )}
       </div>
 
       <nav
         aria-label="More projects"
-        className="mt-16 flex justify-between gap-6 border-t border-line pt-6 text-[15px]"
+        className="mt-16 grid gap-4 border-t border-line pt-6 text-small sm:grid-cols-2"
       >
-        {prev ? (
-          <Link href={`/projects/${prev.slug}`} className="text-muted hover:text-ink">
-            &larr; {prev.title}
+        {prev && (
+          <Link href={`/projects/${prev.slug}`} className="group">
+            <span className="block text-sm text-faint">Previous</span>
+            <span className="transition-colors duration-150 group-hover:text-accent">&larr; {prev.title}</span>
           </Link>
-        ) : (
-          <span />
         )}
         {next && (
-          <Link href={`/projects/${next.slug}`} className="text-right text-muted hover:text-ink">
-            {next.title} &rarr;
+          <Link href={`/projects/${next.slug}`} className="group sm:col-start-2 sm:text-right">
+            <span className="block text-sm text-faint">Next</span>
+            <span className="transition-colors duration-150 group-hover:text-accent">{next.title} &rarr;</span>
           </Link>
         )}
       </nav>

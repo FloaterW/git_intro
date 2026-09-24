@@ -1,36 +1,38 @@
-// Anything marked PLACEHOLDER was made up. Replace it before publishing.
+// Values marked PLACEHOLDER are made up. See "Before publishing" in the README.
 
 export const education = {
   school: "Oregon State University",
   degree: "B.S. in Computer Science",
   graduation: "December 2026", // PLACEHOLDER
   location: "Corvallis, OR",
-  gpa: "3.6", // PLACEHOLDER: remove the line entirely if you'd rather not list it
+  gpa: "3.6" as string | null, // PLACEHOLDER: set to null to hide
   coursework: ["Data Structures", "Algorithms", "Operating Systems", "Databases", "Software Engineering"],
 };
 
-// Jobs, internships, TA work, research. Leave empty and the section is hidden.
-export const experience: {
+export interface Job {
   title: string;
   org: string;
   dates: string;
   points: string[];
-}[] = [
+}
+
+// Leave empty to hide the Experience sections.
+export const experience: Job[] = [
   {
     // PLACEHOLDER: whole entry
     title: "Software Engineering Intern",
     org: "Willamette Data Co.",
-    dates: "Jun – Sep 2025",
+    dates: "Summer 2025",
     points: [
-      "Built an internal React dashboard that replaced a weekly spreadsheet report for the operations team.",
-      "Moved three nightly data jobs from cron scripts to a scheduled Python pipeline with retries and alerts.",
+      "Built an internal React dashboard that replaced a weekly spreadsheet report, saving the operations team about 4 hours a week.",
+      "Moved 3 nightly data jobs from cron scripts to a Python pipeline with retries and alerts; failed runs went from about one a week to none.",
     ],
   },
   {
     // PLACEHOLDER: whole entry
-    title: "Undergraduate Teaching Assistant, Data Structures",
+    title: "Teaching Assistant, Data Structures",
     org: "Oregon State University",
-    dates: "Sep 2024 – Jun 2025",
+    dates: "2024 – 2025",
     points: [
       "Ran weekly lab sections of about 30 students and held office hours.",
       "Wrote autograder tests for two of the course's programming assignments.",
@@ -38,7 +40,6 @@ export const experience: {
   },
 ];
 
-// Keep this to things you could answer interview questions about.
 export const skills: { label: string; items: string }[] = [
   { label: "Languages", items: "Python, Java, TypeScript, C++, SQL" },
   { label: "Frameworks", items: "React, Next.js, Node.js, Spring Boot, FastAPI" },

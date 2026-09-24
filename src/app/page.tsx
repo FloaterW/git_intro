@@ -1,51 +1,73 @@
 import Link from "next/link";
 import { siteConfig } from "@/content/site";
-import { getFeaturedProjects } from "@/content/projects";
-import ProjectList from "@/components/ProjectList";
+import { featuredProjects } from "@/content/projects";
+import { experience } from "@/content/resume";
+import { pageMetadata } from "@/lib/metadata";
+import ButtonLink from "@/components/ButtonLink";
+import ProjectCards from "@/components/ProjectCards";
+import SocialLinks from "@/components/SocialLinks";
+
+export const metadata = pageMetadata({ description: siteConfig.description, path: "/" });
 
 export default function HomePage() {
   return (
     <>
-      <h1 className="font-serif text-3xl font-semibold sm:text-4xl">Hi, I&apos;m Farad.</h1>
-      <p className="mt-3 font-serif text-xl text-ink sm:text-2xl">{siteConfig.tagline}</p>
-
-      <div className="mt-6 space-y-4 text-[17px] leading-relaxed text-muted">
-        <p>
-          I&apos;m finishing a computer science degree at Oregon State. Most of what I build is web
-          apps with a real database behind them, and a lot of it involves data: cleaning it, storing
-          it, and turning it into something people can use. Now and then I build something just for
-          the algorithm, like the chess engine below.
+      <section className="max-w-2xl">
+        <h1 className="heading-1">Hi, I&apos;m Farad.</h1>
+        <p className="mt-3 font-serif text-xl sm:text-2xl">{siteConfig.tagline}</p>
+        <p className="mt-3 text-sm text-faint">
+          Computer science at Oregon State · Graduating {siteConfig.graduation} ·{" "}
+          {siteConfig.availability}
         </p>
-        <p>
-          I&apos;m looking for a full-time software engineering job starting after I graduate in{" "}
-          {siteConfig.graduation}. If you&apos;re hiring,{" "}
-          <a href={`mailto:${siteConfig.email}`} className="text-link">
-            send me an email
-          </a>
+        <p className="mt-5 prose-body">
+          I&apos;m looking for my first full-time software engineering job. My projects range from
+          a banking app that has to stay correct under load to a map of housing costs for every
+          county in the US.
+        </p>
+        <div className="mt-6 flex flex-wrap items-center gap-2 sm:gap-3">
           {siteConfig.resumePdf && (
-            <>
-              {" "}
-              or grab my{" "}
-              <a href={siteConfig.resumePdf} className="text-link">
-                resume
-              </a>
-            </>
+            <ButtonLink href={siteConfig.resumePdf} variant="primary" download>
+              Download resume
+            </ButtonLink>
           )}
-          .
-        </p>
-      </div>
+          <ButtonLink href={`mailto:${siteConfig.email}`}>Email me</ButtonLink>
+          <SocialLinks />
+        </div>
+      </section>
 
-      <p className="mt-5 text-sm text-faint">
-        {siteConfig.location} · {siteConfig.availability}
-      </p>
+      <section className="mt-16">
+        <div className="mb-5 flex items-baseline justify-between gap-4">
+          <h2 className="heading-2">Projects</h2>
+          <Link href="/projects" className="text-small text-link">
+            All projects
+          </Link>
+        </div>
+        <ProjectCards projects={featuredProjects} />
+      </section>
 
-      <h2 className="mt-16 mb-2 font-serif text-xl font-semibold">Some things I&apos;ve built</h2>
-      <ProjectList projects={getFeaturedProjects()} />
-      <p className="mt-5 text-[15px]">
-        <Link href="/projects" className="text-link">
-          See all projects
-        </Link>
-      </p>
+      {experience.length > 0 && (
+        <section className="mt-16 max-w-2xl">
+          <div className="mb-4 flex items-baseline justify-between gap-4">
+            <h2 className="heading-2">Experience</h2>
+            <Link href="/resume" className="text-small text-link">
+              Full resume
+            </Link>
+          </div>
+          <ul className="divide-y divide-line border-y border-line">
+            {experience.map((job) => (
+              <li key={`${job.org}-${job.title}`} className="py-4">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4">
+                  <h3 className="font-medium">
+                    {job.title} <span className="font-normal text-muted">· {job.org}</span>
+                  </h3>
+                  <span className="text-sm text-faint">{job.dates}</span>
+                </div>
+                <p className="mt-1 text-small text-muted">{job.points[0]}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </>
   );
 }

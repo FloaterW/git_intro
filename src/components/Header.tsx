@@ -1,43 +1,20 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { siteConfig } from "@/content/site";
+import NavLink from "@/components/NavLink";
 
 export default function Header() {
-  const pathname = usePathname();
-
   return (
-    <header className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-3 pt-10 pb-14 sm:pt-14">
-      <Link href="/" className="font-serif text-lg font-semibold">
+    <header className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 pt-6 pb-10 sm:pt-12 sm:pb-14">
+      <Link href="/" className="font-serif text-lg font-semibold transition-colors duration-150 hover:text-accent">
         {siteConfig.name}
       </Link>
       <nav aria-label="Main">
-        <ul className="flex gap-5 text-[15px]">
-          {siteConfig.navLinks.map((link) => {
-            const isAnchor = link.href.startsWith("#");
-            const active = !isAnchor && pathname.startsWith(link.href);
-            const className = active
-              ? "text-ink underline decoration-accent underline-offset-[6px]"
-              : "text-muted hover:text-ink";
-            return (
-              <li key={link.href}>
-                {isAnchor ? (
-                  <a href={link.href} className={className}>
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    href={link.href}
-                    aria-current={active ? "page" : undefined}
-                    className={className}
-                  >
-                    {link.label}
-                  </Link>
-                )}
-              </li>
-            );
-          })}
+        <ul className="flex gap-4 text-small sm:gap-6">
+          {siteConfig.navLinks.map((link) => (
+            <li key={link.href}>
+              <NavLink href={link.href}>{link.label}</NavLink>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>

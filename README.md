@@ -39,6 +39,7 @@ That covers the project numbers and stories, the GitHub and demo links, the expe
 ## Tests
 
 ```bash
-npm run dev          # in one terminal
-npx playwright test  # in another
+npm test
 ```
+
+This builds the site, starts it, and runs the Playwright tests on desktop, tablet and phone sizes. If a server is already running on port 3000 it uses that instead.
