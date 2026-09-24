@@ -1,11 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Project, Tag } from "@/content/projects";
 import ProjectCard from "@/components/ProjectCard";
 
-export default function ProjectFilter({ projects, tags }: { projects: Project[]; tags: Tag[] }) {
-  const [active, setActive] = useState<Tag | null>(null);
+interface Props {
+  projects: Project[];
+  tags: Tag[];
+}
+
+// The active filter lives in the URL (?tag=Data) so Back and shared links keep it.
+export default function ProjectFilter({ projects, tags }: Props) {
+  const param = useSearchParams().get("tag");
+  const active = tags.find((t) => t === param) ?? null;
+
+  function select(tag: Tag | null) {
+    const url = new URL(window.location.href);
+    if (tag) url.searchParams.set("tag", tag);
+    else url.searchParams.delete("tag");
+    window.history.replaceState(null, "", url);
+  }
+
+  return <FilterView projects={projects} tags={tags} active={active} onSelect={select} />;
+}
+
+// Rendered on the server as the Suspense fallback, so the page arrives with every project.
+export function FilterView({
+  projects,
+  tags,
+  active = null,
+  onSelect,
+}: Props & { active?: Tag | null; onSelect?: (tag: Tag | null) => void }) {
   const shown = active ? projects.filter((p) => p.tags.includes(active)) : projects;
   const options: { label: string; value: Tag | null }[] = [
     { label: "All", value: null },
@@ -29,7 +54,7 @@ export default function ProjectFilter({ projects, tags }: { projects: Project[];
               key={label}
               type="button"
               aria-pressed={pressed}
-              onClick={() => setActive(value)}
+              onClick={() => onSelect?.(value)}
               className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors duration-150 ${
                 pressed
                   ? "border-ink bg-ink text-paper"

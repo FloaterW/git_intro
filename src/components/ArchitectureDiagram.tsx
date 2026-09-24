@@ -4,19 +4,16 @@ export default function ArchitectureDiagram({
   steps: { label: string; detail: string }[];
 }) {
   return (
-    <ol className="flex flex-col items-stretch md:flex-row md:items-center">
-      {steps.map((step, i) => (
-        <li key={step.label} className="flex flex-col items-center md:flex-1 md:flex-row">
-          <div className="w-full rounded-lg border border-line bg-card px-3 py-3 text-center">
+    <ol className="grid gap-6 md:auto-cols-fr md:grid-flow-col">
+      {steps.map((step) => (
+        <li
+          key={step.label}
+          className="relative flex after:absolute after:-bottom-5.5 after:left-1/2 after:-translate-x-1/2 after:text-accent after:content-['↓'] last:after:hidden md:after:top-1/2 md:after:-right-4.5 md:after:bottom-auto md:after:left-auto md:after:translate-x-0 md:after:-translate-y-1/2 md:after:content-['→']"
+        >
+          <div className="flex w-full flex-col justify-center rounded-lg border border-line bg-card px-3 py-3 text-center">
             <p className="text-small font-medium">{step.label}</p>
             <p className="mt-0.5 text-sm text-muted">{step.detail}</p>
           </div>
-          {i < steps.length - 1 && (
-            <span aria-hidden="true" className="px-2 py-1 text-accent">
-              <span className="md:hidden">&darr;</span>
-              <span className="hidden md:inline">&rarr;</span>
-            </span>
-          )}
         </li>
       ))}
     </ol>

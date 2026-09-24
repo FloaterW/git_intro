@@ -1,6 +1,7 @@
+import { Suspense } from "react";
 import { allTags, projects } from "@/content/projects";
 import { pageMetadata } from "@/lib/metadata";
-import ProjectFilter from "@/components/ProjectFilter";
+import ProjectFilter, { FilterView } from "@/components/ProjectFilter";
 
 export const metadata = pageMetadata({
   title: "Projects",
@@ -17,7 +18,9 @@ export default function ProjectsPage() {
         hardest problem I hit, and what I&apos;d do next, with links to the code and a live demo
         where there is one.
       </p>
-      <ProjectFilter projects={projects} tags={allTags} />
+      <Suspense fallback={<FilterView projects={projects} tags={allTags} />}>
+        <ProjectFilter projects={projects} tags={allTags} />
+      </Suspense>
     </>
   );
 }

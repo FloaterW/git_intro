@@ -25,9 +25,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${serif.variable} motion-safe:scroll-smooth`}
+      className={`${serif.variable} scroll-pt-28 motion-safe:scroll-smooth`}
     >
-      <body className="antialiased">
+      <body className="flex min-h-screen flex-col antialiased">
         <a
           href="#main"
           className="sr-only rounded bg-ink px-3 py-2 text-paper focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
@@ -35,8 +35,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <Header />
-        <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-5xl flex-col px-5 sm:px-8">
-          <main id="main" className="flex-1 scroll-mt-20 pt-10 sm:pt-16">
+        <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-5 sm:px-8">
+          <main id="main" className="flex-1 pt-10 sm:pt-16">
             {children}
           </main>
           <Footer />

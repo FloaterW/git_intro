@@ -4,10 +4,7 @@ import SocialLinks from "@/components/SocialLinks";
 
 export default function Footer() {
   return (
-    <footer
-      id="contact"
-      className="mt-24 scroll-mt-20 border-t border-line pt-10 pb-8 print:hidden"
-    >
+    <footer id="contact" className="mt-24 border-t border-line pt-10 pb-8 print:hidden">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h2 className="heading-2">Get in touch</h2>

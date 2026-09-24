@@ -207,3 +207,78 @@ test("no horizontal scrolling", async ({ page }) => {
     expect(overflow, path).toBeLessThanOrEqual(0);
   }
 });
+
+test("nothing scrolls sideways on the smallest phones", async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 320, height: 640 } });
+  const page = await ctx.newPage();
+  for (const path of pages) {
+    await page.goto(path);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
+    expect(overflow, path).toBeLessThanOrEqual(0);
+  }
+  await ctx.close();
+});
+
+test("short pages don't scroll at all", async ({ page }) => {
+  await page.goto("/nope");
+  const extra = await page.evaluate(
+    () => document.documentElement.scrollHeight - window.innerHeight,
+  );
+  expect(extra).toBeLessThanOrEqual(0);
+  await expect(page).toHaveTitle(/Page not found/);
+});
+
+test("project filter survives going back", async ({ page }) => {
+  const tag = allTags.find((t) => projects.filter((p) => p.tags.includes(t)).length > 0)!;
+  const match = projects.find((p) => p.tags.includes(tag))!;
+  await page.goto("/projects");
+  await page.getByRole("button", { name: new RegExp(`^${tag}`) }).click();
+  await expect(page).toHaveURL(new RegExp(`tag=${tag}`));
+  await page
+    .locator("main")
+    .getByRole("link", { name: new RegExp(match.title) })
+    .click();
+  await expect(page).toHaveURL(new RegExp(`/projects/${match.slug}$`));
+  await page.goBack();
+  await expect(page.getByRole("button", { name: new RegExp(`^${tag}`) })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+});
+
+test("the demo's Run button keeps keyboard focus", async ({ page }) => {
+  await page.goto(`/projects/${withDemo.slug}`);
+  const run = page.getByRole("button", { name: /^Run/ });
+  await run.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByText(/disappeared|appeared out of nowhere|luck/)).toBeVisible();
+  await expect(run).toBeFocused();
+});
+
+test("copy email puts the address on the clipboard", async ({ browser }) => {
+  const ctx = await browser.newContext({ permissions: ["clipboard-read", "clipboard-write"] });
+  const page = await ctx.newPage();
+  await page.goto("/");
+  await page.getByRole("button", { name: "Copy email" }).click();
+  await expect(page.getByRole("button", { name: "Copied!" })).toBeVisible();
+  const href = await page.locator("footer a[href^='mailto:']").first().getAttribute("href");
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(href!.slice(7));
+  await expect(page.getByRole("button", { name: "Copy email" })).toBeVisible({ timeout: 4000 });
+  await ctx.close();
+});
+
+test("tabbing never hides the focused element under the sticky header", async ({ page }) => {
+  await page.goto("/resume");
+  await page.locator("footer a[href^='mailto:']").first().focus();
+  for (let i = 0; i < 4; i++) {
+    await page.keyboard.press("Shift+Tab");
+    const covered = await page.evaluate(() => {
+      const header = document.querySelector("header")!.getBoundingClientRect();
+      const el = document.activeElement!.getBoundingClientRect();
+      return el.top < header.bottom;
+    });
+    expect(covered).toBe(false);
+  }
+});

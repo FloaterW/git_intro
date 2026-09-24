@@ -66,7 +66,25 @@
 
   :focus-visible {
     @apply rounded-sm outline-2 outline-offset-3 outline-accent;
-    transition-property: none;
+  }
+}
+
+/* Unlayered so it beats transition utilities: the focus ring should appear instantly. */
+:focus-visible {
+  transition-property: none;
+}
+
+/* Always print the light palette, even when the OS is in dark mode. */
+@media print {
+  :root {
+    --paper: #ffffff;
+    --card: #ffffff;
+    --ink: #1f1d1a;
+    --muted: #57524b;
+    --faint: #736d64;
+    --line: #e4dfd6;
+    --accent: #b8440f;
+    color-scheme: light;
   }
 }
 

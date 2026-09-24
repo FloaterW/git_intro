@@ -63,6 +63,7 @@ export default function RaceConditionDemo() {
   const [balances, setBalances] = useState<Balances>([START, START]);
   const [progress, setProgress] = useState(0);
   const [running, setRunning] = useState(false);
+  const [runs, setRuns] = useState(0);
   const frame = useRef<number | null>(null);
 
   useEffect(
@@ -73,6 +74,8 @@ export default function RaceConditionDemo() {
   );
 
   function run() {
+    if (running) return;
+    setRuns((n) => n + 1);
     const frames = simulate(locked);
     const instant = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (instant) {
@@ -96,6 +99,7 @@ export default function RaceConditionDemo() {
   }
 
   function choose(value: boolean) {
+    if (running || value === locked) return;
     setLocked(value);
     setBalances([START, START]);
     setProgress(0);
@@ -116,9 +120,9 @@ export default function RaceConditionDemo() {
             key={opt.label}
             type="button"
             aria-pressed={locked === opt.value}
-            disabled={running}
+            aria-disabled={running}
             onClick={() => choose(opt.value)}
-            className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors duration-150 disabled:opacity-50 ${
+            className={`rounded-full border px-3.5 py-1.5 text-sm transition-colors duration-150 aria-disabled:opacity-50 ${
               locked === opt.value
                 ? "border-ink bg-ink text-paper"
                 : "border-line text-muted hover:border-accent hover:text-accent"
@@ -130,8 +134,8 @@ export default function RaceConditionDemo() {
         <button
           type="button"
           onClick={run}
-          disabled={running}
-          className="ml-auto rounded-md bg-accent px-4 py-2 text-small font-medium text-paper transition-colors duration-150 hover:bg-ink disabled:opacity-50"
+          aria-disabled={running}
+          className="ml-auto rounded-md bg-accent px-4 py-2 text-small font-medium text-paper transition-colors duration-150 hover:bg-ink aria-disabled:opacity-60"
         >
           {running ? "Running…" : `Run ${TRANSFERS.toLocaleString()} transfers`}
         </button>
@@ -161,10 +165,15 @@ export default function RaceConditionDemo() {
       </div>
 
       <p className="mt-4 min-h-6 text-small" aria-live="polite">
+        {done && <span className="sr-only">Run {runs}: </span>}
         {done &&
-          (drift === 0 ? (
+          (locked ? (
             <span className="text-emerald-700 dark:text-emerald-400">
               Total is still {usd.format(START * 2)}. Every transfer waited its turn.
+            </span>
+          ) : drift === 0 ? (
+            <span className="text-muted">
+              No money went missing this time, but that was luck. Run it again.
             </span>
           ) : (
             <span className="text-red-700 dark:text-red-400">

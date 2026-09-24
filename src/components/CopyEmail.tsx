@@ -2,21 +2,30 @@
 
 import { useEffect, useState } from "react";
 
+type Status = { state: "idle" | "copied" | "failed"; at: number };
+
+const labels = { idle: "Copy email", copied: "Copied!", failed: "Couldn't copy" };
+const announcements = {
+  idle: "",
+  copied: "Email address copied",
+  failed: "Couldn't copy. Select the address to copy it.",
+};
+
 export default function CopyEmail({ email }: { email: string }) {
-  const [copied, setCopied] = useState(false);
+  const [status, setStatus] = useState<Status>({ state: "idle", at: 0 });
 
   useEffect(() => {
-    if (!copied) return;
-    const timer = setTimeout(() => setCopied(false), 2000);
+    if (status.state === "idle") return;
+    const timer = setTimeout(() => setStatus({ state: "idle", at: Date.now() }), 2000);
     return () => clearTimeout(timer);
-  }, [copied]);
+  }, [status]);
 
   async function copy() {
     try {
       await navigator.clipboard.writeText(email);
-      setCopied(true);
+      setStatus({ state: "copied", at: Date.now() });
     } catch {
-      window.location.href = `mailto:${email}`;
+      setStatus({ state: "failed", at: Date.now() });
     }
   }
 
@@ -27,10 +36,10 @@ export default function CopyEmail({ email }: { email: string }) {
         onClick={copy}
         className="inline-flex items-center rounded-md border border-line px-3.5 py-2 text-small font-medium transition-colors duration-150 hover:border-accent hover:text-accent sm:px-4"
       >
-        {copied ? "Copied!" : "Copy email"}
+        {labels[status.state]}
       </button>
       <span className="sr-only" aria-live="polite">
-        {copied ? "Email address copied" : ""}
+        {announcements[status.state]}
       </span>
     </>
   );
