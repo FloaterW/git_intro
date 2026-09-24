@@ -18,6 +18,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return { title: project.title, description: project.summary };
 }
 
+function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1.5 rounded border border-line px-3 py-1.5 text-[15px] hover:border-accent hover:text-accent"
+    >
+      {children}
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <path d="M3.5 8.5l5-5M4.5 3.5h4v4" />
+      </svg>
+    </a>
+  );
+}
+
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
@@ -26,6 +42,13 @@ export default async function ProjectPage({ params }: PageProps) {
   const i = projects.indexOf(project);
   const prev = projects[i - 1];
   const next = projects[i + 1];
+
+  const facts = [
+    ["My role", project.role],
+    ["Team", project.team],
+    ["When", project.timeline],
+    ["Built with", project.stack.join(", ")],
+  ];
 
   return (
     <article>
@@ -36,32 +59,53 @@ export default async function ProjectPage({ params }: PageProps) {
       <h1 className="mt-6 font-serif text-3xl font-semibold">{project.title}</h1>
       <p className="mt-3 text-[17px] leading-relaxed text-muted">{project.summary}</p>
 
-      <p className="mt-4 text-sm text-faint">
-        {project.year} · {project.stack.join(", ")}
-      </p>
-
-      {(project.links.github || project.links.live) && (
-        <p className="mt-3 flex gap-5 text-[15px]">
-          {project.links.github && (
-            <a href={project.links.github} className="text-link" target="_blank" rel="noopener noreferrer">
-              Code on GitHub
-            </a>
-          )}
-          {project.links.live && (
-            <a href={project.links.live} className="text-link" target="_blank" rel="noopener noreferrer">
-              Try it
-            </a>
-          )}
-        </p>
+      {(project.links.live || project.links.github) && (
+        <div className="mt-5 flex flex-wrap gap-3">
+          {project.links.live && <ExternalLink href={project.links.live}>Try it</ExternalLink>}
+          {project.links.github && <ExternalLink href={project.links.github}>Code</ExternalLink>}
+        </div>
       )}
 
-      {project.image && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={project.image}
-          alt={`Screenshot of ${project.title}`}
-          className="mt-10 w-full rounded-md border border-line"
+      {project.video ? (
+        <video
+          src={project.video}
+          poster={project.image}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-label={`Short demo of ${project.title}`}
+          className="mt-8 w-full rounded-md border border-line"
         />
+      ) : (
+        project.image && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={project.image}
+            alt={`Screenshot of ${project.title}`}
+            className="mt-8 w-full rounded-md border border-line"
+          />
+        )
+      )}
+
+      <dl className="mt-8 grid gap-x-8 gap-y-4 text-[15px] sm:grid-cols-2">
+        {facts.map(([label, value]) => (
+          <div key={label}>
+            <dt className="text-sm text-faint">{label}</dt>
+            <dd className="mt-0.5">{value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {project.metrics.length > 0 && (
+        <ul className="mt-8 grid grid-cols-3 gap-4 border-y border-line py-5">
+          {project.metrics.map((m) => (
+            <li key={m.label}>
+              <p className="font-serif text-2xl font-semibold tabular-nums sm:text-3xl">{m.value}</p>
+              <p className="mt-1 text-sm leading-snug text-muted">{m.label}</p>
+            </li>
+          ))}
+        </ul>
       )}
 
       <div className="mt-10 space-y-10">

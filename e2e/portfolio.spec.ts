@@ -62,6 +62,38 @@ test("unknown pages show the 404 page", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
 });
 
+test("project pages show media, facts and links", async ({ page }) => {
+  await page.goto("/projects/banking-app");
+  const img = page.locator("article img");
+  await expect(img).toBeVisible();
+  expect(await img.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
+  await expect(page.getByText("My role")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Try it/ })).toHaveAttribute("href", /^https:/);
+  await expect(page.getByRole("link", { name: /Code/ })).toHaveAttribute("href", /github\.com/);
+
+  await page.goto("/projects/chess-engine");
+  await expect(page.locator("article video")).toBeVisible();
+});
+
+test("every project image and video file exists", async ({ request }) => {
+  const files = [
+    ...slugs.map((s) => `/images/projects/${s}.png`),
+    "/images/projects/chess-engine-demo.webm",
+    "/resume.pdf",
+    "/icon.svg",
+    "/opengraph-image.png",
+  ];
+  for (const f of files) {
+    expect((await request.get(f)).status(), f).toBe(200);
+  }
+});
+
+test("link previews are set up", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /opengraph-image/);
+  await expect(page.locator('link[rel="icon"]').first()).toHaveAttribute("href", /icon/);
+});
+
 test("no horizontal scrolling", async ({ page }) => {
   for (const path of pages) {
     await page.goto(path);
