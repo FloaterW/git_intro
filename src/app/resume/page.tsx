@@ -1,345 +1,106 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { siteConfig } from "@/content/site";
-import { resumeData } from "@/content/resume";
-import { skillGroups } from "@/content/skills";
-import { getFeaturedProjects } from "@/content/projects";
-import SkillGroup from "@/components/SkillGroup";
-import Button from "@/components/Button";
+import { education, experience, skills } from "@/content/resume";
+import { projects } from "@/content/projects";
 
 export const metadata: Metadata = {
   title: "Resume",
-  description:
-    "Resume — Farad Wahab, CS student at Oregon State University.",
+  description: "Farad Wahab's resume: education, projects and skills.",
 };
 
-export default function ResumePage() {
-  const featured = getFeaturedProjects();
+function Heading({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="mt-12 mb-4 border-b border-line pb-2 font-serif text-xl font-semibold">
+      {children}
+    </h2>
+  );
+}
 
+export default function ResumePage() {
   return (
     <>
-      <section
-        style={{
-          paddingTop: "var(--space-4xl)",
-          paddingBottom: "var(--space-xl)",
-        }}
-      >
-        <div className="container">
-          <div style={{ maxWidth: "var(--content-width)" }}>
-            <p className="section-label">Resume</p>
-            <h1
-              style={{
-                fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
-                fontWeight: 700,
-                letterSpacing: "-0.025em",
-                marginBottom: "var(--space-md)",
-              }}
-            >
-              {siteConfig.name}
-            </h1>
-            <p
-              style={{
-                fontSize: "1.0625rem",
-                color: "var(--color-text-secondary)",
-                lineHeight: 1.6,
-                marginBottom: "var(--space-xl)",
-              }}
-            >
-              {siteConfig.description}
-            </p>
+      <h1 className="font-serif text-3xl font-semibold">Resume</h1>
+      <p className="mt-4 text-[17px] leading-relaxed text-muted">
+        {siteConfig.resumePdf ? (
+          <>
+            Here&apos;s the short version.{" "}
+            <a href="/resume.pdf" className="text-link">
+              Download the PDF
+            </a>{" "}
+            if you&apos;d rather have that.
+          </>
+        ) : (
+          <>
+            Here&apos;s the short version. If you want a PDF,{" "}
+            <a href={`mailto:${siteConfig.email}`} className="text-link">
+              email me
+            </a>{" "}
+            and I&apos;ll send one over.
+          </>
+        )}
+      </p>
 
-            {resumeData.resumeAvailable ? (
-              <Button href={siteConfig.resumeUrl} external>
-                Download resume (PDF)
-              </Button>
-            ) : (
-              <p
-                style={{
-                  fontSize: "0.875rem",
-                  color: "var(--color-text-tertiary)",
-                  fontFamily: "var(--font-mono)",
-                  padding: "var(--space-md) var(--space-lg)",
-                  backgroundColor: "var(--color-bg-alt)",
-                  borderRadius: "var(--radius-md)",
-                  border: "1px solid var(--color-border)",
-                  display: "inline-block",
-                }}
-              >
-                Resume available on request
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
+      <Heading>Education</Heading>
+      <div className="flex items-baseline justify-between gap-4">
+        <p className="font-medium">{education.school}</p>
+        <p className="shrink-0 text-sm text-faint">{education.graduation}</p>
+      </div>
+      <p className="text-muted">
+        {education.degree} · {education.location}
+      </p>
+      <p className="mt-2 text-[15px] text-muted">
+        Coursework: {education.coursework.join(", ")}
+      </p>
 
-      <hr className="divider container" />
-
-      {/* Education */}
-      <section className="section">
-        <div className="container">
-          <div style={{ maxWidth: "var(--content-width)" }}>
-            <p className="section-label">Education</p>
-            <h2
-              style={{
-                fontSize: "1.25rem",
-                fontWeight: 600,
-                marginBottom: "var(--space-xs)",
-              }}
-            >
-              {resumeData.education.school}
-            </h2>
-            <p
-              style={{
-                fontSize: "0.9375rem",
-                color: "var(--color-text-secondary)",
-                marginBottom: "var(--space-sm)",
-              }}
-            >
-              {resumeData.education.degree}
-            </p>
-            <p
-              style={{
-                fontSize: "0.875rem",
-                color: "var(--color-text-tertiary)",
-                marginBottom: "var(--space-lg)",
-              }}
-            >
-              Expected {resumeData.education.expected} ·{" "}
-              {resumeData.education.location}
-            </p>
-
-            <div>
-              <h3
-                style={{
-                  fontSize: "0.8125rem",
-                  fontFamily: "var(--font-mono)",
-                  fontWeight: 500,
-                  color: "var(--color-text-tertiary)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  marginBottom: "var(--space-sm)",
-                }}
-              >
-                Relevant Coursework
-              </h3>
-              <p
-                style={{
-                  fontSize: "0.875rem",
-                  color: "var(--color-text-secondary)",
-                  lineHeight: 1.7,
-                }}
-              >
-                {resumeData.education.coursework.join(" · ")}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <hr className="divider container" />
-
-      {/* Experience */}
-      {resumeData.experience.length > 0 && (
+      {experience.length > 0 && (
         <>
-          <section className="section">
-            <div className="container">
-              <div style={{ maxWidth: "var(--content-width)" }}>
-                <p className="section-label">Experience</p>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "var(--space-2xl)",
-                  }}
-                >
-                  {resumeData.experience.map((exp, i) => (
-                    <div key={i}>
-                      <h2
-                        style={{
-                          fontSize: "1.125rem",
-                          fontWeight: 600,
-                          marginBottom: "var(--space-xs)",
-                        }}
-                      >
-                        {exp.title}
-                      </h2>
-                      <p
-                        style={{
-                          fontSize: "0.9375rem",
-                          color: "var(--color-text-secondary)",
-                          marginBottom: "var(--space-xs)",
-                        }}
-                      >
-                        {exp.company}
-                      </p>
-                      <p
-                        style={{
-                          fontSize: "0.8125rem",
-                          color: "var(--color-text-tertiary)",
-                          marginBottom: "var(--space-md)",
-                        }}
-                      >
-                        {exp.period} · {exp.location}
-                      </p>
-                      <ul
-                        style={{
-                          listStyle: "none",
-                          padding: 0,
-                          margin: 0,
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "var(--space-xs)",
-                        }}
-                      >
-                        {exp.highlights.map((h, j) => (
-                          <li
-                            key={j}
-                            style={{
-                              fontSize: "0.875rem",
-                              color: "var(--color-text-secondary)",
-                              lineHeight: 1.6,
-                              paddingLeft: "var(--space-lg)",
-                              position: "relative",
-                            }}
-                          >
-                            <span
-                              style={{
-                                position: "absolute",
-                                left: 0,
-                                color: "var(--color-accent)",
-                              }}
-                            >
-                              —
-                            </span>
-                            {h}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
+          <Heading>Experience</Heading>
+          <div className="space-y-6">
+            {experience.map((job) => (
+              <div key={`${job.org}-${job.title}`}>
+                <div className="flex items-baseline justify-between gap-4">
+                  <p className="font-medium">
+                    {job.title}, {job.org}
+                  </p>
+                  <p className="shrink-0 text-sm text-faint">{job.dates}</p>
                 </div>
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-[15px] text-muted">
+                  {job.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
               </div>
-            </div>
-          </section>
-          <hr className="divider container" />
+            ))}
+          </div>
         </>
       )}
 
-      {/* Skills */}
-      <section className="section">
-        <div className="container">
-          <p className="section-label">Skills</p>
-          <h2
-            className="section-title"
-            style={{ marginBottom: "var(--space-2xl)" }}
-          >
-            Technical skills
-          </h2>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(16rem, 1fr))",
-              gap: "var(--space-xl)",
-            }}
-          >
-            {skillGroups.map((group) => (
-              <SkillGroup key={group.label} group={group} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <hr className="divider container" />
-
-      {/* Selected projects */}
-      <section className="section">
-        <div className="container">
-          <div style={{ maxWidth: "var(--content-width)" }}>
-            <p className="section-label">Projects</p>
-            <h2
-              className="section-title"
-              style={{ marginBottom: "var(--space-xl)" }}
-            >
-              Selected projects
-            </h2>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--space-lg)",
-              }}
-            >
-              {featured.map((project) => (
-                <div
-                  key={project.slug}
-                  style={{
-                    paddingBottom: "var(--space-lg)",
-                    borderBottom: "1px solid var(--color-border)",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "baseline",
-                      flexWrap: "wrap",
-                      gap: "var(--space-sm)",
-                      marginBottom: "var(--space-xs)",
-                    }}
-                  >
-                    <h3
-                      style={{
-                        fontSize: "0.9375rem",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {project.title}
-                    </h3>
-                    <span
-                      style={{
-                        fontSize: "0.75rem",
-                        color: "var(--color-text-tertiary)",
-                        fontFamily: "var(--font-mono)",
-                      }}
-                    >
-                      {project.year}
-                    </span>
-                  </div>
-                  <p
-                    style={{
-                      fontSize: "0.8125rem",
-                      color: "var(--color-text-secondary)",
-                      lineHeight: 1.6,
-                      marginBottom: "var(--space-sm)",
-                    }}
-                  >
-                    {project.subtitle}
-                  </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "var(--space-xs)",
-                    }}
-                  >
-                    {project.stack.slice(0, 4).map((tech) => (
-                      <span
-                        key={tech}
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.6875rem",
-                          color: "var(--color-text-tertiary)",
-                        }}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
+      <Heading>Projects</Heading>
+      <div className="space-y-5">
+        {projects.map((p) => (
+          <div key={p.slug}>
+            <div className="flex items-baseline justify-between gap-4">
+              <Link href={`/projects/${p.slug}`} className="text-link font-medium">
+                {p.title}
+              </Link>
+              <p className="shrink-0 text-sm text-faint">{p.year}</p>
             </div>
+            <p className="mt-1 text-[15px] text-muted">{p.summary}</p>
+            <p className="mt-1 text-sm text-faint">{p.stack.join(", ")}</p>
           </div>
-        </div>
-      </section>
+        ))}
+      </div>
+
+      <Heading>Skills</Heading>
+      <dl className="space-y-2 text-[15px]">
+        {skills.map((s) => (
+          <div key={s.label} className="sm:flex sm:gap-4">
+            <dt className="shrink-0 font-medium sm:w-32">{s.label}</dt>
+            <dd className="text-muted">{s.items}</dd>
+          </div>
+        ))}
+      </dl>
     </>
   );
 }

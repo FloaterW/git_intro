@@ -6,42 +6,30 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.title,
-    template: `%s — ${siteConfig.name}`,
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
   openGraph: {
-    title: siteConfig.title,
+    title: siteConfig.name,
     description: siteConfig.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
     locale: "en_US",
     type: "website",
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          minHeight: "100vh",
-        }}
-      >
-        <Header />
-        <main style={{ flex: 1 }}>{children}</main>
-        <Footer />
+      <body className="antialiased">
+        <div className="mx-auto flex min-h-screen max-w-2xl flex-col px-5 sm:px-6">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );

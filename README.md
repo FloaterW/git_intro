@@ -1,34 +1,27 @@
 # faradwahab.com
 
-Personal portfolio site. Built with Next.js, TypeScript, and Tailwind CSS.
+My personal site. Next.js, TypeScript and Tailwind.
 
-## Running locally
+## Running it
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Then open http://localhost:3000.
 
-## Customizing content
+## Editing content
 
-All content lives in `src/content/`:
+Text lives in `src/content/`, not in the page files:
 
-- **site.ts** — Name, links, metadata
-- **projects.ts** — Project entries and case study content
-- **skills.ts** — Skill groups
-- **resume.ts** — Education, experience, coursework
+- `site.ts`: name, email, links, and switches for the resume PDF and photo
+- `projects.ts`: the project list and each project's write-up
+- `resume.ts`: education, experience and skills
 
-Update these files and the site rebuilds. Look for `TODO` comments for fields that need real values.
-
-## Building for production
+## Tests
 
 ```bash
-npm run build
-npm start
+npm run dev          # in one terminal
+npx playwright test  # in another
 ```
-
-## Deploying
-
-Works with Vercel, Netlify, or any Node.js host. For static export, add `output: 'export'` to `next.config.ts`.
