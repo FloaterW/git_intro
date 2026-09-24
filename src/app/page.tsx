@@ -27,9 +27,9 @@ export default function HomePage() {
             Computer science at Oregon State · {siteConfig.availability}
           </p>
           <p className="mt-5 prose-body motion-safe:animate-rise motion-safe:[animation-delay:180ms]">
-            Transfers that can&apos;t lose money under load, county data that changes shape between
-            years, a chess search that has to finish in two seconds: those are the problems I like.
-            I&apos;m looking for {siteConfig.lookingFor}.
+            Transfers that can&apos;t lose money under load, census tracts that split between one
+            census and the next, a chess search that has to finish in two seconds: those are the
+            problems I like. I&apos;m looking for {siteConfig.lookingFor}.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 motion-safe:animate-rise motion-safe:[animation-delay:240ms]">
             {siteConfig.resumePdf && (

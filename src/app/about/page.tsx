@@ -32,9 +32,10 @@ export default function AboutPage() {
           <p>
             Most of my projects are full-stack web apps: a React frontend, a backend in Node, Java
             or Python, and PostgreSQL underneath. A lot of them also involve public datasets that
-            need serious cleaning before they&apos;re useful, like the county data behind the{" "}
-            <Link href="/projects/housing-dashboard" className="text-link">
-              housing dashboard
+            need serious cleaning before they&apos;re useful, like the Statistics Canada and CMHC
+            data behind{" "}
+            <Link href="/projects/civicscope" className="text-link">
+              CivicScope
             </Link>
             .
           </p>
