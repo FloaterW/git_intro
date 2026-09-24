@@ -14,7 +14,7 @@ export interface Project {
   team: string;
   timeline: string;
   stack: string[];
-  links: { github?: string; live?: string };
+  links: { github?: string; live?: string; liveNote?: string };
   image: string;
   video?: { webm: string; mp4: string; poster: string };
   metrics: { value: string; label: string }[];
@@ -60,6 +60,8 @@ export const projects: Project[] = [
     links: {
       github: "https://github.com/FloaterW/civicscope",
       live: "https://civicscope-gold.vercel.app/",
+      liveNote:
+        "The data server sleeps when nobody is using it, so the first load can take about 30 seconds.",
     },
     image: "/images/projects/civicscope.png",
     metrics: [

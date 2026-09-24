@@ -108,6 +108,11 @@ export default async function ProjectPage({ params }: PageProps) {
             )}
           </div>
         )}
+        {project.links.live && project.links.liveNote && (
+          <p className="mt-3 text-small text-muted motion-safe:animate-rise motion-safe:[animation-delay:120ms]">
+            {project.links.liveNote}
+          </p>
+        )}
       </header>
 
       <div className="mt-8 motion-safe:animate-rise motion-safe:[animation-delay:180ms]">
