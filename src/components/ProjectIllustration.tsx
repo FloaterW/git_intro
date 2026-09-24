@@ -67,7 +67,7 @@ function BankingIllustration() {
     <svg width="320" height="200" viewBox="0 0 320 200" fill="none" aria-hidden="true">
       {/* Card shape */}
       <rect x="60" y="20" width="200" height="120" rx="12" stroke="var(--color-border-strong)" strokeWidth="1.5" fill="var(--color-bg-card)" />
-      <rect x="80" y="48" width="40" height="28" rx="4" fill="var(--color-accent)" opacity="0.2" stroke="var(--color-accent)" strokeWidth="1" opacity="0.4" />
+      <rect x="80" y="48" width="40" height="28" rx="4" fill="var(--color-accent)" fillOpacity="0.2" stroke="var(--color-accent)" strokeWidth="1" strokeOpacity="0.4" />
       <rect x="80" y="92" width="100" height="6" rx="3" fill="var(--color-border-strong)" />
       <rect x="80" y="106" width="60" height="4" rx="2" fill="var(--color-border)" />
 
@@ -165,8 +165,8 @@ function DashboardIllustration() {
       {/* Map area */}
       <rect x="20" y="10" width="180" height="130" rx="6" stroke="var(--color-border-strong)" strokeWidth="1.5" fill="var(--color-bg-card)" />
       {/* Abstract map shapes */}
-      <path d="M40 60 Q60 30 90 50 Q110 65 100 90 Q90 110 60 100 Q35 90 40 60Z" fill="var(--color-accent)" opacity="0.12" stroke="var(--color-accent)" strokeWidth="1" opacity="0.3" />
-      <path d="M100 40 Q130 20 150 45 Q160 60 145 80 Q130 95 110 80 Q90 65 100 40Z" fill="var(--color-accent)" opacity="0.08" stroke="var(--color-accent)" strokeWidth="1" opacity="0.2" />
+      <path d="M40 60 Q60 30 90 50 Q110 65 100 90 Q90 110 60 100 Q35 90 40 60Z" fill="var(--color-accent)" fillOpacity="0.12" stroke="var(--color-accent)" strokeWidth="1" strokeOpacity="0.3" />
+      <path d="M100 40 Q130 20 150 45 Q160 60 145 80 Q130 95 110 80 Q90 65 100 40Z" fill="var(--color-accent)" fillOpacity="0.08" stroke="var(--color-accent)" strokeWidth="1" strokeOpacity="0.2" />
       {/* Map pins */}
       <circle cx="72" cy="68" r="4" fill="var(--color-accent)" opacity="0.7" />
       <circle cx="120" cy="55" r="4" fill="var(--color-accent)" opacity="0.5" />
@@ -206,7 +206,7 @@ function WeatherIllustration() {
       <rect x="140" y="14" width="40" height="4" rx="2" fill="var(--color-border)" />
 
       {/* Sun */}
-      <circle cx="160" cy="64" r="16" fill="var(--color-accent)" opacity="0.2" stroke="var(--color-accent)" strokeWidth="1.5" opacity="0.5" />
+      <circle cx="160" cy="64" r="16" fill="var(--color-accent)" fillOpacity="0.2" stroke="var(--color-accent)" strokeWidth="1.5" strokeOpacity="0.5" />
       {/* Sun rays */}
       {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => {
         const rad = (angle * Math.PI) / 180;
@@ -269,7 +269,7 @@ function GenericIllustration() {
       <rect x="60" y="66" width="200" height="4" rx="2" fill="var(--color-border)" />
       <rect x="60" y="78" width="180" height="4" rx="2" fill="var(--color-border)" />
       <rect x="60" y="90" width="160" height="4" rx="2" fill="var(--color-border)" />
-      <rect x="60" y="114" width="60" height="24" rx="4" fill="var(--color-accent)" opacity="0.15" stroke="var(--color-accent)" strokeWidth="1" opacity="0.3" />
+      <rect x="60" y="114" width="60" height="24" rx="4" fill="var(--color-accent)" fillOpacity="0.15" stroke="var(--color-accent)" strokeWidth="1" strokeOpacity="0.3" />
     </svg>
   );
 }
