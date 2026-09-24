@@ -1,13 +1,13 @@
 // Values marked PLACEHOLDER are made up. See "Before publishing" in the README.
 
-export const education = {
-  school: "Oregon State University",
-  degree: "B.S. in Computer Science",
-  graduation: "December 2026", // PLACEHOLDER
-  location: "Corvallis, OR",
-  gpa: "3.6" as string | null, // PLACEHOLDER: set to null to hide
-  coursework: ["Data Structures", "Algorithms", "Operating Systems", "Databases", "Software Engineering"],
-};
+export interface Education {
+  school: string;
+  degree: string;
+  graduation: string;
+  location: string;
+  gpa: string | null;
+  coursework: string[];
+}
 
 export interface Job {
   title: string;
@@ -15,6 +15,21 @@ export interface Job {
   dates: string;
   points: string[];
 }
+
+export const education: Education = {
+  school: "Oregon State University",
+  degree: "B.S. in Computer Science",
+  graduation: "Expected June 2028", // PLACEHOLDER
+  location: "Corvallis, OR",
+  gpa: "3.6", // PLACEHOLDER: set to null to hide
+  coursework: [
+    "Data Structures",
+    "Algorithms",
+    "Operating Systems",
+    "Databases",
+    "Software Engineering",
+  ],
+};
 
 // Leave empty to hide the Experience sections.
 export const experience: Job[] = [

@@ -22,7 +22,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${serif.variable} motion-safe:scroll-smooth`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${serif.variable} motion-safe:scroll-smooth`}
+    >
       <body className="antialiased">
         <a
           href="#main"
@@ -30,9 +34,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <div className="mx-auto flex min-h-screen max-w-4xl flex-col px-5 sm:px-8">
-          <Header />
-          <main id="main" className="flex-1">
+        <Header />
+        <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-5xl flex-col px-5 sm:px-8">
+          <main id="main" className="flex-1 scroll-mt-20 pt-10 sm:pt-16">
             {children}
           </main>
           <Footer />

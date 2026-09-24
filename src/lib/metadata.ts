@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/content/site";
 
+// Pages that set openGraph replace the root layout's, so the share image is passed explicitly.
 export function pageMetadata({
   title,
   description,
@@ -12,19 +13,25 @@ export function pageMetadata({
   path: string;
   image?: string;
 }): Metadata {
-  const fullTitle = title ? `${title} | ${siteConfig.name}` : siteConfig.name;
   return {
     ...(title && { title }),
     description,
     alternates: { canonical: path },
     openGraph: {
-      title: fullTitle,
+      title: title ?? siteConfig.name,
       description,
       url: path,
       siteName: siteConfig.name,
       locale: "en_US",
       type: "website",
-      images: [{ url: image, width: 1200, height: 630, alt: title ?? siteConfig.tagline }],
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `${title ? `${title} by ${siteConfig.name}` : siteConfig.name}: ${description}`,
+        },
+      ],
     },
   };
 }

@@ -27,9 +27,16 @@ function Row({ left, right }: { left: React.ReactNode; right: string }) {
 export default function ResumePage() {
   return (
     <div className="max-w-2xl">
-      <h1 className="heading-1">Resume</h1>
+      <h1 className="heading-1">
+        <span className="print:hidden">Resume</span>
+        <span className="hidden print:inline">{siteConfig.name}</span>
+      </h1>
+      <p className="hidden text-small print:block">
+        {siteConfig.email} · {siteConfig.github.replace("https://", "")} ·{" "}
+        {siteConfig.linkedin.replace("https://", "")}
+      </p>
       {siteConfig.resumePdf ? (
-        <div className="mt-5 flex flex-wrap items-center gap-3">
+        <div className="mt-5 flex flex-wrap items-center gap-3 print:hidden">
           <ButtonLink href={siteConfig.resumePdf} variant="primary" download>
             Download PDF
           </ButtonLink>

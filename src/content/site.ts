@@ -8,11 +8,14 @@ export interface SiteConfig {
   email: string;
   github: string;
   linkedin: string;
+  sourceRepo: string;
   resumePdf: string | null;
   photo: string | null;
   graduation: string;
+  lookingFor: string;
   location: string;
   availability: string;
+  currently: string | null;
   navLinks: { label: string; href: string }[];
 }
 
@@ -25,11 +28,14 @@ export const siteConfig: SiteConfig = {
   email: "wahabf@oregonstate.edu", // swap for a personal address before graduating
   github: "https://github.com/floaterw",
   linkedin: "https://linkedin.com/in/faradwahab", // PLACEHOLDER
+  sourceRepo: "https://github.com/floaterw/portfolio", // PLACEHOLDER: this site's repo
   resumePdf: "/resume.pdf", // PLACEHOLDER: sample PDF
   photo: "/images/photo-placeholder.svg", // PLACEHOLDER
-  graduation: "December 2026", // PLACEHOLDER
+  graduation: "June 2028", // PLACEHOLDER
+  lookingFor: "a software engineering internship for summer 2027", // PLACEHOLDER
   location: "Corvallis, OR", // PLACEHOLDER
   availability: "Open to relocating or remote", // PLACEHOLDER
+  currently: "Adding a transposition table to my chess engine", // PLACEHOLDER: or null to hide
   navLinks: [
     { label: "Projects", href: "/projects" },
     { label: "About", href: "/about" },

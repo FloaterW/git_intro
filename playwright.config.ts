@@ -1,14 +1,13 @@
-import { existsSync } from "node:fs";
 import { defineConfig } from "@playwright/test";
 
-// Use a preinstalled Chromium if one is provided, otherwise Playwright's own.
-const chromiumPath = process.env.CHROMIUM_PATH ?? "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
+// Set CHROMIUM_PATH to use a preinstalled Chromium instead of Playwright's own.
+const executablePath = process.env.CHROMIUM_PATH;
 
 export default defineConfig({
   testDir: "./e2e",
   use: {
     baseURL: "http://localhost:3000",
-    launchOptions: existsSync(chromiumPath) ? { executablePath: chromiumPath } : {},
+    launchOptions: executablePath ? { executablePath } : {},
   },
   webServer: {
     command: "npm run build && npm run start",

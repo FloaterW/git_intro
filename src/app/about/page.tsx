@@ -26,14 +26,13 @@ export default function AboutPage() {
         )}
         <div className="space-y-4 prose-body">
           <p>
-            I&apos;m Farad. I study computer science at Oregon State, graduate in{" "}
-            {siteConfig.graduation}, and I&apos;m looking for my first full-time job as a software
-            engineer.
+            I&apos;m Farad. I study computer science at Oregon State (graduating{" "}
+            {siteConfig.graduation}) and I&apos;m looking for {siteConfig.lookingFor}.
           </p>
           <p>
-            Most of my projects are full-stack web apps: a React frontend, a backend in Node, Java or
-            Python, and PostgreSQL underneath. A lot of them also involve public datasets that need
-            serious cleaning before they&apos;re useful, like the county data behind the{" "}
+            Most of my projects are full-stack web apps: a React frontend, a backend in Node, Java
+            or Python, and PostgreSQL underneath. A lot of them also involve public datasets that
+            need serious cleaning before they&apos;re useful, like the county data behind the{" "}
             <Link href="/projects/housing-dashboard" className="text-link">
               housing dashboard
             </Link>
@@ -57,15 +56,15 @@ export default function AboutPage() {
         </p>
         {/* PLACEHOLDER: replace with something true about you */}
         <p>
-          Outside of code I play pickup soccer on weekends and hike around Corvallis. Marys Peak
-          at sunset is my favorite so far.
+          Outside of code I play pickup soccer on weekends and hike around Corvallis. Marys Peak at
+          sunset is my favorite so far.
         </p>
       </div>
 
       <h2 className="mt-14 heading-2">What I&apos;m looking for</h2>
       {/* PLACEHOLDER: adjust to the roles you actually want */}
       <p className="mt-3 prose-body">
-        A backend or full-stack role, ideally working with real data: pipelines, reporting, or
+        A backend or full-stack internship, ideally working with real data: pipelines, reporting, or
         systems where getting the data model wrong is expensive. {siteConfig.availability}.
       </p>
 

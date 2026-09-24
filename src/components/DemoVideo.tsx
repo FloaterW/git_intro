@@ -16,10 +16,8 @@ export default function DemoVideo({
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      video.play().catch(() => {});
+      ref.current?.play().catch(() => {});
     }
   }, []);
 
@@ -33,7 +31,7 @@ export default function DemoVideo({
       controls
       preload="metadata"
       aria-label={label}
-      className="w-full rounded-lg border border-line"
+      className="aspect-16/10 w-full rounded-xl border border-line bg-card"
     >
       <source src={webm} type="video/webm" />
       <source src={mp4} type="video/mp4" />

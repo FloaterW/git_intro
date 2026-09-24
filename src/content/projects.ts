@@ -1,21 +1,27 @@
 // Values marked PLACEHOLDER are made up. See "Before publishing" in the README.
 
+export type Tag = "Web" | "Data" | "Systems";
+
 export interface Project {
   slug: string;
   title: string;
   year: string;
   summary: string;
+  highlight?: string;
+  tags: Tag[];
+  architecture?: { label: string; detail: string }[];
   role: string;
   team: string;
   timeline: string;
   stack: string[];
   links: { github?: string; live?: string };
   image: string;
-  video?: { webm: string; mp4: string };
+  video?: { webm: string; mp4: string; poster: string };
   metrics: { value: string; label: string }[];
   featured: boolean;
   sections: { heading: string; body: string[] }[];
-  code?: { language: string; caption: string; source: string };
+  code?: { caption: string; source: string };
+  demo?: "race-condition";
 }
 
 export const projects: Project[] = [
@@ -23,7 +29,16 @@ export const projects: Project[] = [
     slug: "banking-app",
     title: "Banking app",
     year: "2025",
-    summary: "Accounts, transfers and transaction history, built so that money can't appear or disappear, even under load.",
+    summary:
+      "Accounts, transfers and transaction history, built so that money can't appear or disappear, even under load.",
+    highlight: "0 balance mismatches across 10,000 concurrent transfers", // PLACEHOLDER
+    tags: ["Web"],
+    architecture: [
+      { label: "React", detail: "accounts and transfer UI" },
+      { label: "Spring Boot API", detail: "auth and validation" },
+      { label: "Transfer service", detail: "row locks, one transaction" },
+      { label: "PostgreSQL", detail: "accounts and ledger" },
+    ],
     role: "Backend lead: transfer logic, database schema and login", // PLACEHOLDER
     team: "3 people, class project", // PLACEHOLDER
     timeline: "Winter 2025, 10 weeks", // PLACEHOLDER
@@ -40,6 +55,7 @@ export const projects: Project[] = [
       { value: "94%", label: "test coverage on transfers" },
     ],
     featured: true,
+    demo: "race-condition",
     sections: [
       {
         heading: "The idea",
@@ -62,7 +78,6 @@ export const projects: Project[] = [
     ],
     code: {
       // PLACEHOLDER
-      language: "java",
       caption:
         "The core of a transfer. Both rows stay locked until the transaction commits, and they're always locked in the same order so two opposite transfers can't deadlock.",
       source: `@Transactional
@@ -84,7 +99,17 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
     slug: "video-platform",
     title: "Video sharing platform",
     year: "2025",
-    summary: "A YouTube-style site: upload a video, it gets transcoded into three resolutions, and people can watch it on your channel.",
+    summary:
+      "A YouTube-style site: upload a video, it gets transcoded into three resolutions, and people can watch it on your channel.",
+    highlight: "2 GB uploads, processed into 3 resolutions in about 40 s", // PLACEHOLDER
+    tags: ["Web"],
+    architecture: [
+      { label: "Browser", detail: "streams the upload" },
+      { label: "S3", detail: "stores the original" },
+      { label: "Node worker", detail: "FFmpeg: 1080p, 720p, 360p" },
+      { label: "PostgreSQL", detail: "tracks processing state" },
+      { label: "Player", detail: "picks a resolution" },
+    ],
     role: "Everything", // PLACEHOLDER
     team: "Solo",
     timeline: "Fall 2024 to winter 2025, on and off", // PLACEHOLDER
@@ -127,7 +152,16 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
     slug: "housing-dashboard",
     title: "Housing affordability dashboard",
     year: "2025",
-    summary: "A map of every US county showing how the cost of a home compares to local income, from 2009 to today.",
+    summary:
+      "A map of every US county showing how the cost of a home compares to local income, from 2009 to today.",
+    highlight: "3,100+ counties and 15 years of data from 4 public sources", // PLACEHOLDER
+    tags: ["Data", "Web"],
+    architecture: [
+      { label: "4 public datasets", detail: "prices, incomes, boundaries" },
+      { label: "Pandas pipeline", detail: "clean and join" },
+      { label: "PostgreSQL + PostGIS", detail: "county shapes and history" },
+      { label: "React + Plotly", detail: "map and charts" },
+    ],
     role: "Data pipeline and the map", // PLACEHOLDER
     team: "2 people", // PLACEHOLDER
     timeline: "Spring 2025, about 6 weeks", // PLACEHOLDER
@@ -170,7 +204,16 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
     slug: "chess-engine",
     title: "Chess engine",
     year: "2024",
-    summary: "A chess engine in C++ that you can play against in the terminal. It looks six moves ahead in under two seconds.",
+    summary:
+      "A chess engine in C++ that you can play against in the terminal. It looks six moves ahead in under two seconds.",
+    highlight: "Searches 1.2M positions per second", // PLACEHOLDER
+    tags: ["Systems"],
+    architecture: [
+      { label: "Move generator", detail: "every legal move" },
+      { label: "Alpha-beta search", detail: "captures and checks first" },
+      { label: "Evaluation", detail: "material and position" },
+      { label: "Terminal UI", detail: "you vs. the engine" },
+    ],
     role: "Everything", // PLACEHOLDER
     team: "Solo",
     timeline: "Summer 2024, about 8 weeks", // PLACEHOLDER
@@ -181,6 +224,7 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
       // PLACEHOLDER
       webm: "/images/projects/chess-engine-demo.webm",
       mp4: "/images/projects/chess-engine-demo.mp4",
+      poster: "/images/projects/chess-engine-poster.webp",
     },
     metrics: [
       // PLACEHOLDER
@@ -188,7 +232,7 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
       { value: "1.2M", label: "positions searched per second" },
       { value: "9×", label: "faster after move ordering" },
     ],
-    featured: true,
+    featured: false,
     sections: [
       {
         heading: "What it does",
@@ -205,17 +249,20 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
       },
       {
         heading: "What's missing",
-        body: ["A transposition table so it stops re-searching positions it has already seen, and an opening book."],
+        body: [
+          "A transposition table so it stops re-searching positions it has already seen, and an opening book.",
+        ],
       },
     ],
     code: {
       // PLACEHOLDER
-      language: "cpp",
       caption:
         "Move ordering. Captures are ranked by most valuable victim, least valuable attacker, then checks, then everything else.",
       source: `int moveScore(const Move& m, const Board& board) {
     if (m.isCapture()) {
-        return 1000 + 10 * value(board.pieceAt(m.to)) - value(board.pieceAt(m.from));
+        int victim = value(board.pieceAt(m.to));
+        int attacker = value(board.pieceAt(m.from));
+        return 1000 + 10 * victim - attacker;
     }
     if (board.givesCheck(m)) return 500;
     return 0;
@@ -232,7 +279,9 @@ void orderMoves(std::vector<Move>& moves, const Board& board) {
     slug: "weather-app",
     title: "Weather app",
     year: "2024",
-    summary: "A small weather app that shows only what I check: right now, the next few hours, and the week.",
+    summary:
+      "A small weather app that shows only what I check: right now, the next few hours, and the week.",
+    tags: ["Web"],
     role: "Everything",
     team: "Solo",
     timeline: "A weekend", // PLACEHOLDER
@@ -256,7 +305,7 @@ void orderMoves(std::vector<Move>& moves, const Board& board) {
 ];
 
 export const featuredProjects = projects.filter((p) => p.featured);
-export const smallerProjects = projects.filter((p) => !p.featured);
+export const allTags: Tag[] = ["Web", "Data", "Systems"];
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
