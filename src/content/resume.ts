@@ -55,10 +55,10 @@ export const experience: Job[] = [
   },
 ];
 
-// PLACEHOLDER: only the Data row is checked against a real project (CivicScope). Confirm the rest.
+// PLACEHOLDER: only the Data row is checked against real projects (CivicScope, Reddit Monitor). Confirm the rest.
 export const skills: { label: string; items: string }[] = [
   { label: "Languages", items: "Python, Java, TypeScript, C++, SQL" },
   { label: "Frameworks", items: "React, Next.js, Node.js, Spring Boot, FastAPI" },
-  { label: "Data", items: "PostgreSQL, PostGIS, SQLAlchemy, Alembic" },
+  { label: "Data", items: "PostgreSQL, PostGIS, SQLite, SQLAlchemy, Alembic" },
   { label: "Tools", items: "Git, Docker, AWS (S3, EC2), Linux" },
 ];

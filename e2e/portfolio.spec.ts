@@ -73,8 +73,8 @@ test("home page has a clear call to action", async ({ page }) => {
   const resume = page.getByRole("link", { name: "Download resume" });
   await expect(resume).toBeVisible();
   await expect(resume).toHaveAttribute("download", "");
-  await expect(page.locator("main").getByRole("link", { name: /GitHub/ })).toBeVisible();
-  await expect(page.locator("main").getByRole("link", { name: /LinkedIn/ })).toBeVisible();
+  await expect(page.locator("main").getByRole("link", { name: /^GitHub/ })).toBeVisible();
+  await expect(page.locator("main").getByRole("link", { name: /^LinkedIn/ })).toBeVisible();
 });
 
 test("home page shows featured projects that link to their write-ups", async ({ page }) => {

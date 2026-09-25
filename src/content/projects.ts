@@ -17,7 +17,8 @@ export interface Project {
   stack: string[];
   links: { github?: string; live?: string; liveNote?: string };
   image: string;
-  heroImage?: { src: string; caption: string };
+  // Used instead of image when the project is at the front of the home page fan.
+  heroImage?: string;
   video?: { webm: string; mp4: string; poster: string };
   metrics: { value: string; label: string }[];
   featured: boolean;
@@ -71,10 +72,7 @@ export const projects: Project[] = [
       mp4: "/images/projects/civicscope-demo.mp4",
       poster: "/images/projects/civicscope-poster.webp",
     },
-    heroImage: {
-      src: "/images/projects/civicscope-tracts.png",
-      caption: "CivicScope: rent burden across 1,334 GTA census tracts",
-    },
+    heroImage: "/images/projects/civicscope-tracts.png",
     metrics: [
       { value: "1,334", label: "census tracts on the map" },
       { value: "1,244", label: "tracts with real CMHC construction data" },
@@ -138,6 +136,101 @@ if ct_sum != published:
         f"CT sum {ct_sum} != published total {published}"
     )
 return ct_rows`,
+    },
+  },
+  {
+    slug: "reddit-monitor",
+    title: "Reddit Monitor",
+    year: "2026",
+    summary:
+      "A Python pipeline that scans subreddits for keywords, has an LLM write a digest with a link to every source comment, and emails it to me every evening.",
+    highlight: "A checker flags any dollar amount in the digest that isn't in the source comments",
+    tags: ["Data"],
+    architecture: [
+      { label: "Reddit", detail: "HTML pages, RSS as fallback" },
+      { label: "Python scraper", detail: "keyword filter, dedup" },
+      { label: "LLM summary", detail: "grouped by topic, every claim cited" },
+      { label: "Email + SQLite", detail: "HTML digest, run history" },
+      {
+        label: "Evaluator",
+        detail: "checks the digest against its sources",
+        note: "Catches made-up numbers",
+      },
+    ],
+    role: "Everything",
+    team: "Solo, built with AI coding tools",
+    timeline: "June 2026 to now, ongoing",
+    stack: ["Python", "SQLite", "Requests", "Gmail SMTP", "pytest", "GitHub Actions"],
+    links: {
+      github: "https://github.com/FloaterW/reddit-monitor",
+    },
+    image: "/images/projects/reddit-monitor.png",
+    metrics: [
+      { value: "4", label: "subreddits checked every evening" },
+      { value: "27", label: "keywords tracked" },
+      { value: "127", label: "tests" },
+    ],
+    featured: true,
+    sections: [
+      {
+        heading: "Why",
+        body: [
+          "r/churning moves fast. Card offers and bonus deadlines change daily, and the useful parts are spread across hundreds of comments in a few big threads. I wanted the parts that matter to me in my inbox every evening, with a link back to each comment so I can check the source.",
+        ],
+      },
+      {
+        heading: "How it works",
+        body: [
+          "A Python scraper reads subreddit pages without the Reddit API, keeps comments that match my keywords, and drops duplicates. The matches go to an LLM through its command-line tool, with a prompt that groups them by topic and cites every claim as a link to the original comment.",
+          "The result becomes an HTML email that renders in Gmail, Outlook and Apple Mail, and every run is saved to SQLite. What to watch lives in JSON profiles, so the same code also runs a job-market digest for r/cscareerquestions. Windows Task Scheduler runs it at 6:30 every evening.",
+        ],
+      },
+      {
+        heading: "Checking the LLM's work",
+        body: [
+          "A digest is only useful if its numbers are right, and LLMs sometimes invent them. So I wrote a separate checker that compares a digest with the raw comments it came from. It flags dollar amounts, percentages and point totals that don't appear in any source comment, authors who were used but never cited, and high-scoring comments the digest skipped.",
+        ],
+      },
+      {
+        heading: "Running it every day",
+        body: [
+          "Running it on a schedule found problems no test did. In July a run failed and the log blamed the model name. The real cause was an expired login in the LLM tool, which printed its error to stdout, where my error handler never looked. Now both streams are logged, and login errors say what to fix.",
+          "On August 12 the run never started at all, and nothing noticed, because the failure alert only works if the script runs. I added a watchdog that checks later in the evening that a digest exists and emails me if it doesn't. Then Reddit started sending old.reddit.com to a login page, so the scraper found 0 posts. It now detects the redirect and switches to Reddit's RSS feeds.",
+        ],
+      },
+      {
+        heading: "If I kept going",
+        body: [
+          "The next version is in an open pull request. It treats scraped comments as untrusted input, so text in a comment can't steer the LLM, and it checks more of the digest before anything gets sent.",
+        ],
+      },
+    ],
+    code: {
+      lang: "python",
+      caption:
+        "From the checker. Every dollar amount in the digest has to appear in at least one source comment, or the check fails.",
+      source: `def check_dollar_amounts(digest_text, comments):
+    """Check that every dollar amount in the digest exists in at least one source comment.
+
+    Returns dict with verified amounts, unverified amounts, and pass/fail.
+    """
+    digest_amounts = extract_dollar_amounts(digest_text)
+
+    source_text = " ".join(c.get("body", "") for c in comments)
+    source_amounts = extract_dollar_amounts(source_text)
+
+    verified = digest_amounts & source_amounts
+    unverified = digest_amounts - source_amounts
+
+    total = len(digest_amounts)
+    return {
+        "verified_count": len(verified),
+        "unverified_count": len(unverified),
+        "total": total,
+        "verified": sorted(verified),
+        "unverified": sorted(unverified),
+        "passed": len(unverified) == 0,
+    }`,
     },
   },
   {
@@ -245,7 +338,7 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
       { value: "~40 s", label: "to process a 5-minute video" },
       { value: "2 GB", label: "max upload size" },
     ],
-    featured: true,
+    featured: false,
     sections: [
       {
         heading: "Why I built it",
@@ -378,6 +471,11 @@ void orderMoves(std::vector<Move>& moves, const Board& board) {
 ];
 
 export const featuredProjects = projects.filter((p) => p.featured);
+
+// The fanned screenshots in the home page hero, front first.
+export const heroShowcase = ["civicscope", "banking-app", "video-platform"].map((slug) =>
+  projects.find((p) => p.slug === slug)!,
+);
 export const allTags: Tag[] = ["Web", "Data", "Systems"];
 
 // Below this many projects, the Projects page skips the tag filters.

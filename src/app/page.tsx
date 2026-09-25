@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/content/site";
-import { featuredProjects, projects } from "@/content/projects";
+import { featuredProjects, heroShowcase, projects } from "@/content/projects";
 import { experience } from "@/content/resume";
 import { pageMetadata } from "@/lib/metadata";
 import ButtonLink from "@/components/ButtonLink";
@@ -49,7 +49,7 @@ export default function HomePage() {
             </p>
           )}
         </div>
-        <HeroShowcase project={lead} />
+        <HeroShowcase projects={heroShowcase} />
       </section>
 
       <section className="mt-20">
