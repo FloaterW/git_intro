@@ -11,7 +11,7 @@ export default function HeroShowcase({ project }: { project: Project }) {
     >
       <Image
         src={hero.src}
-        alt={`Screenshot of ${project.title}`}
+        alt=""
         width={1600}
         height={1000}
         sizes="560px"
@@ -20,7 +20,7 @@ export default function HeroShowcase({ project }: { project: Project }) {
         className="aspect-16/10 w-full rounded-lg border border-line object-cover object-top shadow-xl shadow-black/10 transition-transform duration-300 ease-out group-hover:-translate-y-1 motion-reduce:transition-none dark:brightness-90"
       />
       <p className="mt-3 text-small text-muted transition-colors duration-150 group-hover:text-ink">
-        {hero.caption} &rarr;
+        {hero.caption} <span aria-hidden="true">&rarr;</span>
       </p>
     </Link>
   );
