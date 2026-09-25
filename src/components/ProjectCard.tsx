@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import type { Project } from "@/content/projects";
 
 export default function ProjectCard({
@@ -23,20 +24,22 @@ export default function ProjectCard({
       <div
         className={`overflow-hidden border-line ${wide ? "border-b md:border-r md:border-b-0" : "border-b"}`}
       >
-        <Image
-          src={p.image}
-          alt=""
-          width={1600}
-          height={1000}
-          sizes={
-            wide
-              ? "(min-width: 1024px) 560px, 100vw"
-              : "(min-width: 1024px) 460px, (min-width: 640px) 50vw, 100vw"
-          }
-          loading={eager ? "eager" : "lazy"}
-          fetchPriority={eager ? "high" : undefined}
-          className="aspect-16/10 h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none dark:brightness-90"
-        />
+        <ViewTransition name={`project-${p.slug}`} share="morph" default="none">
+          <Image
+            src={p.image}
+            alt=""
+            width={1600}
+            height={1000}
+            sizes={
+              wide
+                ? "(min-width: 1024px) 560px, 100vw"
+                : "(min-width: 1024px) 460px, (min-width: 640px) 50vw, 100vw"
+            }
+            loading={eager ? "eager" : "lazy"}
+            fetchPriority={eager ? "high" : undefined}
+            className="aspect-16/10 h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none dark:brightness-90"
+          />
+        </ViewTransition>
       </div>
       <div className={`flex flex-1 flex-col ${wide ? "p-6 md:justify-center" : "p-5"}`}>
         <div className="flex items-baseline justify-between gap-3">

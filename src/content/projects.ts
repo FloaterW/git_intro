@@ -1,6 +1,7 @@
 // Values marked PLACEHOLDER are made up. See "Before publishing" in the README.
 
 export type Tag = "Web" | "Data" | "Systems";
+export type CodeLang = "python" | "java" | "cpp";
 
 export interface Project {
   slug: string;
@@ -21,7 +22,7 @@ export interface Project {
   metrics: { value: string; label: string }[];
   featured: boolean;
   sections: { heading: string; body: string[] }[];
-  code?: { caption: string; source: string };
+  code?: { caption: string; source: string; lang: CodeLang };
   demo?: "race-condition";
 }
 
@@ -65,6 +66,11 @@ export const projects: Project[] = [
         "The data server sleeps when nobody is using it, so the first load can take about 30 seconds.",
     },
     image: "/images/projects/civicscope.png",
+    video: {
+      webm: "/images/projects/civicscope-demo.webm",
+      mp4: "/images/projects/civicscope-demo.mp4",
+      poster: "/images/projects/civicscope-poster.webp",
+    },
     heroImage: {
       src: "/images/projects/civicscope-tracts.png",
       caption: "CivicScope: rent burden across 1,334 GTA census tracts",
@@ -111,6 +117,7 @@ export const projects: Project[] = [
       },
     ],
     code: {
+      lang: "python",
       caption:
         "The check in the CMHC loader. A tract table only gets written if its tracts add up to CMHC's published total for the whole region.",
       source: `ct_rows = parse_ct_table(response)
@@ -190,6 +197,7 @@ return ct_rows`,
     ],
     code: {
       // PLACEHOLDER
+      lang: "java",
       caption:
         "The core of a transfer. Both rows stay locked until the transaction commits, and they're always locked in the same order so two opposite transfers can't deadlock.",
       source: `@Transactional
@@ -320,6 +328,7 @@ public void transfer(long fromId, long toId, BigDecimal amount) {
     ],
     code: {
       // PLACEHOLDER
+      lang: "cpp",
       caption:
         "Move ordering. Captures are ranked by most valuable victim, least valuable attacker, then checks, then everything else.",
       source: `int moveScore(const Move& m, const Board& board) {

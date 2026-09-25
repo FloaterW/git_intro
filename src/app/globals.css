@@ -8,6 +8,9 @@
   --faint: #736d64;
   --line: #e4dfd6;
   --accent: #2f5a9e;
+  --code-string: #3d6b35;
+  --code-constant: #9a5a00;
+  --code-function: #7b3f7a;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,7 +22,25 @@
     --faint: #8a847b;
     --line: #2e2b27;
     --accent: #8fb4ec;
+    --code-string: #9cc98f;
+    --code-constant: #e0b36a;
+    --code-function: #d6a3d4;
   }
+}
+
+/* Syntax colors for CodeBlock (Shiki css-variables theme). */
+:root {
+  --code-foreground: var(--ink);
+  --code-background: transparent;
+  --code-token-keyword: var(--accent);
+  --code-token-link: var(--accent);
+  --code-token-comment: var(--faint);
+  --code-token-punctuation: var(--muted);
+  --code-token-parameter: var(--ink);
+  --code-token-string: var(--code-string);
+  --code-token-string-expression: var(--code-string);
+  --code-token-constant: var(--code-constant);
+  --code-token-function: var(--code-function);
 }
 
 @theme inline {
@@ -84,6 +105,9 @@
     --faint: #736d64;
     --line: #e4dfd6;
     --accent: #2f5a9e;
+    --code-string: #3d6b35;
+    --code-constant: #9a5a00;
+    --code-function: #7b3f7a;
     color-scheme: light;
   }
 }
@@ -102,4 +126,19 @@
 
 @utility text-link {
   @apply text-ink underline decoration-accent decoration-1 underline-offset-3 transition-colors duration-150 hover:text-accent;
+}
+
+/* A project's screenshot morphs between its card and its page (React ViewTransition). */
+::view-transition-group(.morph) {
+  animation-duration: 350ms;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }

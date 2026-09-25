@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { notFound } from "next/navigation";
 import { projects, getProjectBySlug, type Project } from "@/content/projects";
 import { pageMetadata } from "@/lib/metadata";
 import ArchitectureDiagram from "@/components/ArchitectureDiagram";
 import ButtonLink from "@/components/ButtonLink";
+import CodeBlock from "@/components/CodeBlock";
 import DemoVideo from "@/components/DemoVideo";
 import InterleavingStepper from "@/components/InterleavingStepper";
 import RaceConditionDemo from "@/components/RaceConditionDemo";
@@ -45,14 +47,16 @@ function NeighbourCard({
         direction === "Next" ? "sm:col-start-2 sm:flex-row-reverse sm:text-right" : ""
       }`}
     >
-      <Image
-        src={project.image}
-        alt=""
-        width={1600}
-        height={1000}
-        sizes="96px"
-        className="aspect-16/10 w-24 shrink-0 rounded-md border border-line object-cover object-top dark:brightness-90"
-      />
+      <ViewTransition name={`project-${project.slug}`} share="morph" default="none">
+        <Image
+          src={project.image}
+          alt=""
+          width={1600}
+          height={1000}
+          sizes="96px"
+          className="aspect-16/10 w-24 shrink-0 rounded-md border border-line object-cover object-top dark:brightness-90"
+        />
+      </ViewTransition>
       <span>
         <span className="block text-sm text-faint">{direction} project</span>
         <span className="font-medium transition-colors duration-150 group-hover:text-accent">
@@ -115,27 +119,29 @@ export default async function ProjectPage({ params }: PageProps) {
         )}
       </header>
 
-      <div className="mt-8 motion-safe:animate-rise motion-safe:[animation-delay:180ms]">
-        {project.video ? (
-          <DemoVideo
-            webm={project.video.webm}
-            mp4={project.video.mp4}
-            poster={project.video.poster}
-            label={`Short demo of ${project.title}`}
-          />
-        ) : (
-          <Image
-            src={project.image}
-            alt={`Screenshot of ${project.title}`}
-            width={1600}
-            height={1000}
-            sizes="(min-width: 1024px) 960px, 100vw"
-            loading="eager"
-            fetchPriority="high"
-            className="w-full rounded-xl border border-line dark:brightness-90"
-          />
-        )}
-      </div>
+      <ViewTransition name={`project-${project.slug}`} share="morph" default="none">
+        <div className="mt-8">
+          {project.video ? (
+            <DemoVideo
+              webm={project.video.webm}
+              mp4={project.video.mp4}
+              poster={project.video.poster}
+              label={`Short demo of ${project.title}`}
+            />
+          ) : (
+            <Image
+              src={project.image}
+              alt={`Screenshot of ${project.title}`}
+              width={1600}
+              height={1000}
+              sizes="(min-width: 1024px) 960px, 100vw"
+              loading="eager"
+              fetchPriority="high"
+              className="w-full rounded-xl border border-line dark:brightness-90"
+            />
+          )}
+        </div>
+      </ViewTransition>
 
       <dl className="mt-8 grid grid-cols-2 gap-x-8 gap-y-4 text-small sm:grid-cols-4">
         {facts.map(([label, value]) => (
@@ -200,13 +206,11 @@ export default async function ProjectPage({ params }: PageProps) {
         <section className="mt-12 max-w-3xl">
           <h2 className="heading-2">A piece of the code</h2>
           <p className="mt-3 max-w-2xl prose-body">{project.code.caption}</p>
-          <pre
-            tabIndex={0}
-            aria-label={`Code sample from ${project.title}`}
-            className="mt-4 rounded-xl border border-line bg-card p-4 text-code break-words whitespace-pre-wrap sm:overflow-x-auto sm:p-5 sm:whitespace-pre"
-          >
-            <code>{project.code.source}</code>
-          </pre>
+          <CodeBlock
+            source={project.code.source}
+            lang={project.code.lang}
+            label={`Code sample from ${project.title}`}
+          />
         </section>
       )}
 

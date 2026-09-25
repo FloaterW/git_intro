@@ -41,7 +41,8 @@ That covers the project numbers and stories, the GitHub and demo links, the expe
 - **Static pages.** Every page, including one per project, is generated at build time from the files in `src/content/`. There is no database or API behind the site.
 - **Images.** Screenshots go through `next/image`, so each visitor gets a WebP sized for their screen instead of the 1600px original.
 - **Interactive demos.** The banking page has two client components: a step-through of two transfers colliding and a simulation of 1,000 concurrent transfers with and without row locks. Everything else is server-rendered.
-- **Motion.** Entrance animations, card hovers and the demo video all respect the operating system's reduced-motion setting.
+- **Code samples.** `CodeBlock` highlights each sample with Shiki at build time, using colors from the `--code-*` variables in `globals.css`, so no highlighter ships to the browser. Set `code.lang` on a project to pick the language.
+- **Motion.** A project's screenshot morphs from its card into its page using React's `<ViewTransition>` (built into Next.js 16, no library). Entrance animations, card hovers, the morph and the demo videos all respect the operating system's reduced-motion setting.
 - **Checks.** GitHub Actions runs formatting, lint, type checks, a production build and the Playwright suite on every push and pull request. Locally, Lighthouse scores 94 to 100 on every page, and axe reports no accessibility violations in light or dark mode.
 
 ## Formatting
