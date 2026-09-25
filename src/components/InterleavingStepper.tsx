@@ -150,17 +150,17 @@ export default function InterleavingStepper() {
           const state = i < shown - 1 ? "done" : i === shown - 1 ? "current" : "upcoming";
           const cell = (
             <span
-              className={`block rounded-md px-2.5 py-1.5 transition-colors duration-200 ${
+              className={`block rounded-md border px-2.5 py-1.5 transition-colors duration-200 ${
                 state === "current"
                   ? step.waiting
-                    ? "bg-line text-ink"
-                    : "bg-accent text-paper"
+                    ? "border-transparent bg-line text-ink"
+                    : "border-transparent bg-accent text-paper"
                   : state === "done"
-                    ? "bg-paper text-ink"
-                    : "text-faint"
+                    ? "border-transparent bg-paper text-ink"
+                    : "border-dashed border-line"
               }`}
             >
-              {state === "upcoming" ? "·" : step.action}
+              {state === "upcoming" ? " " : step.action}
             </span>
           );
           return (
