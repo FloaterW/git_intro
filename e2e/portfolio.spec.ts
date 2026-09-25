@@ -133,6 +133,14 @@ test("project pages show media, facts, diagram and links", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "A piece of the code" })).toBeVisible();
 });
 
+test("code samples show their source exactly", async ({ page }) => {
+  for (const p of projects.filter((p) => p.code)) {
+    await page.goto(`/projects/${p.slug}`);
+    const shown = await page.getByLabel(`Code sample from ${p.title}`).textContent();
+    expect(shown?.trimEnd()).toBe(p.code!.source);
+  }
+});
+
 test("race condition demo loses money without locks and not with them", async ({ page }) => {
   await page.goto(`/projects/${withDemo.slug}`);
   const run = page.getByRole("button", { name: /^Run/ });
